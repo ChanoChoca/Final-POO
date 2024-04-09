@@ -34,6 +34,7 @@
                     <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
                         <div class="navbar-nav text-center ms-auto">
                             <a class="nav-link" aria-current="page" href="/visitante/inicio">Inicio</a>
+                            <a class="nav-link" href="/alquiler/alquileres">Alquileres</a>
                             <a class="nav-link" href="/visitante/eventos">Eventos</a>
                             <a class="nav-link" href="/visitante/actividades">Actividades</a>
                             <a class="nav-link" href="/visitante/historia">Historia</a>
@@ -44,6 +45,19 @@
             </nav>
         </header>
 
+        <section class="pb-5 pt-5 mt-5 mb-5 overflow-x-hidden">
+            <div class="d-flex flex-column flex-lg-row align-items-center justify-content-center gap-5">
+                <h2 class="text-center mb-0" data-aos="fade-right" data-aos-easing="linear" data-aos-duration="1000">Descubre Nuestros Próximas Actividades</h2>
+
+                <nav data-aos="fade-left" data-aos-easing="linear" data-aos-duration="1000">
+                    <form class="d-flex" role="search" th:action="@{/alquiler/alquileres}" method="get">
+                        <input class="form-control rounded-start pt-0 pb-0 ps-1 pe-1 searcher" type="search" placeholder="Escriba texto aquí..." aria-label="Search" name="title">
+                        <button class="rounded-end btn rounded-0 btn-pseudoclase" type="submit">Buscar</button>
+                    </form>
+                </nav>
+            </div>
+        </section>
+
         <section class="pt-2 pb-2" data-aos="fade-up" data-aos-easing="linear" data-aos-duration="1000">
 
             <div class="box">
@@ -51,45 +65,55 @@
             </div>
 
             <div style="background-color: #d2b300">
-                <div class="container">
-                    <div class="d-flex flex-row align-items-center justify-content-center gap-3 pt-3 paginado">
-                        <a th:if="${currentPage > 1}"
-                           th:href="@{'/alquileres/eventos?page=' + ${currentPage - 1}}">
-                            <img src="../../static/imagenes/izquierda.svg" width="30" height="30" alt>
-                        </a>
-                        <span class="fs-5 text-white">Página <span th:text="${currentPage}"></span> de <span th:text="${totalPages}"></span></span>
-                        <a th:if="${currentPage < totalPages}"
-                           th:href="@{'/visitante/eventos?page=' + ${currentPage + 1}}">
-                            <img src="../../static/imagenes/izquierda.svg" style="transform: rotate(180deg)" width="30" height="30" alt>
-                        </a>
-                    </div>
+                <div class="row">
+                    <div class="col-3">
+                        <p class="lead mb-0" th:if="${searchText != null && searchText != ''}"
+                           th:text="${searchText}">
+                        </p>
+                        <!-- TODO: agregar más cosas acá -->
 
-                    <div class="d-grid card-eventos gap-5 pb-5 pt-5">
-                        <div class="card" th:each="alquiler : ${alquileres}">
-                            <div class="ratio ratio-16x9">
-                                <img class="card-img top" th:src="@{${'/display?id=' + alquiler.getId()}}" alt="">
-                            </div>
-                            <div class="card-body">
-                                <h5 th:text="${alquiler.nombre}" class="card-title"></h5>
-                                <p th:text="${#strings.length(evento.descripcion) &gt; 100} ? ${#strings.substring(evento.descripcion, 0, 100) + '...'} : ${evento.descripcion}" class="card-text"></p>
-                                <blockquote class="blockquote pt-1">
-                                    <div class="blockquote-footer"><span th:text="${evento.usuario.username}"></span> | <span th:text="${evento.fecha}"></span></div>
-                                </blockquote>
-                                <p><img src="../../static/imagenes/izquierda.svg" style="transform: rotate(180deg)" width="20" height="20" alt> Leer más</p>
+                    </div>
+                    <div class="col-9">
+                        <div class="d-flex flex-row align-items-center justify-content-center gap-3 pt-3 paginado">
+                            <a th:if="${currentPage > 1}"
+                               th:href="@{'/alquileres/eventos?page=' + ${currentPage - 1}}">
+                                <img src="../../static/imagenes/izquierda.svg" width="30" height="30" alt>
+                            </a>
+                            <span class="fs-5 text-white">Página <span th:text="${currentPage}"></span> de <span th:text="${totalPages}"></span></span>
+                            <a th:if="${currentPage < totalPages}"
+                               th:href="@{'/visitante/eventos?page=' + ${currentPage + 1}}">
+                                <img src="../../static/imagenes/izquierda.svg" style="transform: rotate(180deg)" width="30" height="30" alt>
+                            </a>
+                        </div>
+
+                        <div class="d-grid card-eventos gap-5 pb-5 pt-5">
+                            <div class="card" th:each="alquiler : ${alquileres}">
+                                <div class="ratio ratio-16x9">
+                                    <img class="card-img top" th:src="@{${'/display?id=' + alquiler.getId()}}" alt="">
+                                </div>
+                                <div class="card-body">
+                                    <h5 th:text="${alquiler.nombre}" class="card-title"></h5>
+                                    <p th:text="${alquiler.estrellas}"> estrellas</p>
+                                    <div>$<p th:text="${alquiler.precio}"></p></div>
+                                    <div><span th:text="${alquiler.cantidadHabitaciones}"> habitaciones</span></div>
+                                    <div>Bufet<span th:text="${alquiler.hayBufetGratis}"></span></div>
+                                    <p th:if="${alquiler.hayBufetGratis}">Buffet gratis</p>
+                                    <p th:if="${alquiler.hayWifi}">Wifi</p>
+                                </div>
                             </div>
                         </div>
-                    </div>
 
-                    <div class="d-flex flex-row align-items-center justify-content-center gap-3 pb-3 paginado">
-                        <a th:if="${currentPage > 1}"
-                           th:href="@{'/visitante/eventos?page=' + ${currentPage - 1}}">
-                            <img src="../../static/imagenes/izquierda.svg" width="30" height="30" alt>
-                        </a>
-                        <span class="fs-5 text-white">Página <span th:text="${currentPage}"></span> de <span th:text="${totalPages}"></span></span>
-                        <a th:if="${currentPage < totalPages}"
-                           th:href="@{'/visitante/eventos?page=' + ${currentPage + 1}}">
-                            <img src="../../static/imagenes/izquierda.svg" style="transform: rotate(180deg)" width="30" height="30" alt>
-                        </a>
+                        <div class="d-flex flex-row align-items-center justify-content-center gap-3 pb-3 paginado">
+                            <a th:if="${currentPage > 1}"
+                               th:href="@{'/visitante/eventos?page=' + ${currentPage - 1}}">
+                                <img src="../../static/imagenes/izquierda.svg" width="30" height="30" alt>
+                            </a>
+                            <span class="fs-5 text-white">Página <span th:text="${currentPage}"></span> de <span th:text="${totalPages}"></span></span>
+                            <a th:if="${currentPage < totalPages}"
+                               th:href="@{'/visitante/eventos?page=' + ${currentPage + 1}}">
+                                <img src="../../static/imagenes/izquierda.svg" style="transform: rotate(180deg)" width="30" height="30" alt>
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>

@@ -1,9 +1,11 @@
 package ar.edu.unnoba.Proyecto.controller;
 
 import ar.edu.unnoba.Proyecto.model.Actividad;
+import ar.edu.unnoba.Proyecto.model.Alquiler;
 import ar.edu.unnoba.Proyecto.model.Evento;
 import ar.edu.unnoba.Proyecto.model.Subscriptor;
 import ar.edu.unnoba.Proyecto.service.ActividadService;
+import ar.edu.unnoba.Proyecto.service.AlquilerService;
 import ar.edu.unnoba.Proyecto.service.EventoService;
 import ar.edu.unnoba.Proyecto.service.SubscriptorService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,17 +19,17 @@ import org.springframework.web.bind.annotation.*;
 public class VisitanteController {
 
     private final EventoService eventoService;
-
     private final SubscriptorService subscriptorService;
-
     private final ActividadService actividadService;
+    private final AlquilerService alquilerService;
 
 
     @Autowired
-    private VisitanteController(EventoService eventoService, SubscriptorService subscriptorService, ActividadService actividadService) {
+    private VisitanteController(EventoService eventoService, SubscriptorService subscriptorService, ActividadService actividadService, AlquilerService alquilerService) {
         this.eventoService = eventoService;
         this.subscriptorService = subscriptorService;
         this.actividadService = actividadService;
+        this.alquilerService = alquilerService;
     }
 
     //*****************INICIO*****************
@@ -101,8 +103,6 @@ public class VisitanteController {
         return "visitantes/historia";
     }
 
-
-
     @GetMapping("/actividades")
     public String actividades(Model model,
                               @RequestParam(defaultValue = "1") int page,
@@ -116,5 +116,28 @@ public class VisitanteController {
         model.addAttribute("totalPages", actividadPage.getTotalPages()); // cant total de paginas
         model.addAttribute("searchText", title);
         return "visitantes/actividades";
+    }
+
+
+
+    @GetMapping("/alquileres")
+    public String alquileres(Model model,
+                             @RequestParam(defaultValue = "1") int page,
+                             @RequestParam(defaultValue = "9") int size,
+                             @RequestParam(required = false, defaultValue = "") String title) {
+
+        Page<Alquiler> alquilerPage = alquilerService.getPageWithTitleFilter(page - 1, size, title);
+
+        model.addAttribute("alquileres", alquilerPage);
+        model.addAttribute("currentPage", page); // info de la pag actual para cambiar de pagina
+        model.addAttribute("totalPages", alquilerPage.getTotalPages()); // cant total de paginas
+        model.addAttribute("searchText", title);
+        return "visitantes/alquileres";
+    }
+
+    @PostMapping("/alquileres")
+    public String compra(Model model) {
+
+        return "redirect:/visitante/inicio";
     }
 }

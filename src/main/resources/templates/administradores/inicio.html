@@ -54,7 +54,7 @@
             <h1 class="text-center">Bienvenido <span th:text="${#authentication.getName()}"></span></h1>
             <br>
             <div class="row">
-                <div class="col-md-4 text-center">
+                <div class="col-md-3 text-center">
                     <div class="p-3">
                         <h2>Gestionar Usuarios</h2>
                         <br>
@@ -65,7 +65,7 @@
                         <a class="btn btn-danger mt-3" href="/administrador/usuario/eliminar">Modificar/Eliminar Usuario</a>
                     </div>
                 </div>
-                <div class="col-md-4 text-center">
+                <div class="col-md-3 text-center">
                     <div class="p-3">
                         <h2>Gestionar Eventos</h2>
                         <br>
@@ -73,11 +73,11 @@
                             <img src="../../static/imagenes/eventos.svg" alt width="80.2" height="80.2">
                         </div>
                         <a class="btn btn-danger mt-3" href="/administrador/eventos/nuevo">Nuevo Evento</a>
-                        <a class="btn btn-danger mt-3" href="/administrador/eventos">Modificar/Eliminar Evento </a>
+                        <a class="btn btn-danger mt-3" href="/administrador/eventos">Modificar/Eliminar Evento</a>
                         <!--<a class="btn btn-danger mt-1">Eliminar Evento </a>-->
                     </div>
                 </div>
-                <div class="col-md-4 text-center">
+                <div class="col-md-3 text-center">
                     <div class="p-3">
                         <h2>Gestionar Actividades</h2>
                         <br>
@@ -85,7 +85,18 @@
                             <img src="../../static/imagenes/actividades.svg" alt width="80.2" height="80.2">
                         </div>
                         <a class="btn btn-danger mt-3" href="/administrador/actividades/nuevo">Nueva Actividad</a>
-                        <a class="btn btn-danger mt-3" href="/administrador/actividades">Modificar/Eliminar Actividad </a>
+                        <a class="btn btn-danger mt-3" href="/administrador/actividades">Modificar/Eliminar Actividad</a>
+                    </div>
+                </div>
+                <div class="col-md-3 text-center">
+                    <div class="p-3">
+                        <h2>Gestionar Alquileres</h2>
+                        <br>
+                        <div class="d-flex align-items-center justify-content-center">
+                            <img src="../../static/imagenes/actividades.svg" alt width="80.2" height="80.2">
+                        </div>
+                        <a href="/administrador/alquileres/nuevo" class="btn btn-danger mt-3">Nuevo alquiler</a>
+                        <a href="/administrador/alquileres" class="btn btn-danger mt-3">Modificar/Eliminar Actividad</a>
                     </div>
                 </div>
             </div>

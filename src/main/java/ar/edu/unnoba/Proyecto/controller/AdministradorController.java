@@ -1,12 +1,10 @@
 package ar.edu.unnoba.Proyecto.controller;
 
 import ar.edu.unnoba.Proyecto.model.Actividad;
+import ar.edu.unnoba.Proyecto.model.Alquiler;
 import ar.edu.unnoba.Proyecto.model.Evento;
 import ar.edu.unnoba.Proyecto.model.Usuario;
-import ar.edu.unnoba.Proyecto.service.ActividadService;
-import ar.edu.unnoba.Proyecto.service.EnviarMailService;
-import ar.edu.unnoba.Proyecto.service.EventoService;
-import ar.edu.unnoba.Proyecto.service.UsuarioService;
+import ar.edu.unnoba.Proyecto.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.security.core.Authentication;
@@ -32,13 +30,15 @@ public class AdministradorController {
     private final EnviarMailService enviarMailService;
 
     private final ActividadService actividadService;
+    private final AlquilerService alquilerService;
 
     @Autowired
-    public AdministradorController(EventoService eventoService, UsuarioService usuarioService, EnviarMailService enviarMailService, ActividadService actividadService) {
+    public AdministradorController(EventoService eventoService, UsuarioService usuarioService, EnviarMailService enviarMailService, ActividadService actividadService, AlquilerService alquilerService) {
         this.eventoService = eventoService;
         this.usuarioService = usuarioService;
         this.enviarMailService = enviarMailService;
         this.actividadService = actividadService;
+        this.alquilerService = alquilerService;
 
     }
 
@@ -267,7 +267,7 @@ public class AdministradorController {
     }
 
     @GetMapping("/usuario/eliminar")
-    public String eliminarUsuario(Model model, Authentication authentication){
+    public String eliminarUsuario(Model model, Authentication authentication) {
         User sessionUser = (User) authentication.getPrincipal();
 
         model.addAttribute("usuarios", usuarioService.getAll());
@@ -328,6 +328,74 @@ public class AdministradorController {
         return "administradores/nuevo-usuario";
     }//FUNCIONALIDAD: procesa el formulario de modificación de un uusario y guarda los cambios
 
+    @GetMapping("/alquileres/nuevo")
+    public String crearAlquiler(Model model, Authentication authentication) {
+        User sessionUser = (User) authentication.getPrincipal();
 
+        Alquiler alquiler = new Alquiler();
+        model.addAttribute("alquiler", alquiler); //el usuario debe introducir: titulo, descripcion y horarios de aterncion
+        model.addAttribute("user", sessionUser);
+        return "administradores/nuevo-alquiler";
+    }
 
+    @PostMapping("/alquileres/nuevo")
+    public String crearAlquiler(Model model, @Valid @ModelAttribute("alquiler") Alquiler alquiler, BindingResult bindingResult) {
+
+        if (bindingResult.hasErrors()) {
+            return "administradores/nuevo-alquiler";
+        }
+
+        alquilerService.save(alquiler);
+        model.addAttribute("success", "El alquiler ha sido creado correctamente.");
+        return "redirect:/administrador/inicio";
+    }
+
+    @GetMapping("/alquiler/{id}")
+    public String modificarAlquiler(Model model, Authentication authentication, @PathVariable Long id) {
+        User sessionUser = (User) authentication.getPrincipal();
+
+        Alquiler alquiler = alquilerService.get(id);
+        model.addAttribute("alquiler", alquiler);
+        model.addAttribute("user", sessionUser);
+        model.addAttribute("mensaje", "los alquileres se modificaran");
+        return "administradores/alquiler";
+    }
+
+    @PostMapping("/alquiler/{id}")
+    public String modificarAlquiler(Model model, Authentication authentication, @Valid @ModelAttribute("alquiler") Alquiler alquiler, BindingResult result, @RequestParam("imagen") MultipartFile imagen) {
+        User sessionUser = (User) authentication.getPrincipal();
+
+        // guarda el evento existente
+        Alquiler alquilerExistente = alquilerService.get(alquiler.getId());
+
+        // Verifica si se cargo una nueva imagen
+        if (!imagen.isEmpty()) {
+            try {
+                // Actualizar la imagen del evento
+                alquilerExistente.setImagen(imagen);
+            } catch (IOException | SQLException e) {
+                e.printStackTrace();
+            }
+        }
+
+        if (result.hasErrors()) {
+            model.addAttribute("evento", alquilerExistente);
+            model.addAttribute("user", sessionUser);
+            return "administradores/evento";
+        }
+
+        alquilerExistente.setNombre(alquiler.getNombre());
+        alquilerExistente.setPrecio(alquiler.getPrecio());
+
+        alquilerService.save(alquilerExistente);
+        model.addAttribute("success", "El alquiler ha sido modificado correctamente.");
+        return "redirect:/administrador/inicio";
+    }
+
+    @GetMapping("/alquileres/eliminar/{id}")
+    public String eliminarAlquiler(@PathVariable Long id, Model model) {
+        alquilerService.delete(id);
+        model.addAttribute("mensaje", "El alquiler ha sido eliminado exitosamente.");
+        return "redirect:/administrador/inicio";
+    }
 }
