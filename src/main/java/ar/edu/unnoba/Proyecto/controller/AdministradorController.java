@@ -384,7 +384,7 @@ public class AdministradorController {
             return "administradores/evento";
         }
 
-        alquilerExistente.setNombre(alquiler.getNombre());
+        alquilerExistente.setTitulo(alquiler.getTitulo());
         alquilerExistente.setPrecio(alquiler.getPrecio());
 
         alquilerService.save(alquilerExistente);

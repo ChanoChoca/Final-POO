@@ -18,8 +18,8 @@ public class Alquiler {
     @Column(name="id")
     private Long id;
 
-    @Column(name="nombre")
-    private int nombre;
+    @Column(name="titulo")
+    private String titulo;
 
     @Column(name="precio")
     private int precio;
@@ -52,12 +52,12 @@ public class Alquiler {
         this.id = id;
     }
 
-    public int getNombre() {
-        return nombre;
+    public String getTitulo() {
+        return titulo;
     }
 
-    public void setNombre(int nombre) {
-        this.nombre = nombre;
+    public void setTitulo(String titulo) {
+        this.titulo = titulo;
     }
 
     public int getPrecio() {

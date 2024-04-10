@@ -63,6 +63,37 @@ public class AlquilerServiceImpl implements AlquilerService{
     }
 
     @Override
+    public Page<Alquiler> getPageWithTitleAndPriceFilter(int page, int size, String title, Integer minPrice, Integer maxPrice) {
+        PageRequest pageRequest = PageRequest.of(page, size);
+
+        if (title != null && !title.isEmpty()) {
+            if (minPrice != null && maxPrice != null) {
+                // Filtrar por título y rango de precios
+                return alquilerRepository.findByTituloContainingIgnoreCaseAndPrecioBetween(title, minPrice, maxPrice, pageRequest);
+            } else if (minPrice != null) {
+                // Filtrar por título y precio mínimo
+                return alquilerRepository.findByTituloContainingIgnoreCaseAndPrecioGreaterThanEqual(title, minPrice, pageRequest);
+            } else if (maxPrice != null) {
+                // Filtrar por título y precio máximo
+                return alquilerRepository.findByTituloContainingIgnoreCaseAndPrecioLessThanEqual(title, maxPrice, pageRequest);
+            } else {
+                // Si no se proporcionan parámetros de precio, usar solo el filtro de título
+                return alquilerRepository.findByTituloContainingIgnoreCase(title, pageRequest);
+            }
+        } else {
+            // Si no se proporciona título, solo se filtra por precio
+            if (minPrice != null && maxPrice != null) {
+                // Filtrar solo por rango de precios
+                return alquilerRepository.findByPrecioBetween(minPrice, maxPrice, pageRequest);
+            } else {
+                // Si no se proporcionan parámetros de título o precio, obtener todos los alquileres
+                return alquilerRepository.findAll(pageRequest);
+            }
+        }
+    }
+
+
+    @Override
     public byte[] getImageBytes(Long id) throws SQLException {
         Alquiler alquiler = alquilerRepository.findById(id).orElse(null);
         if (alquiler != null) {

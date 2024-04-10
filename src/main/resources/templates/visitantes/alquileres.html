@@ -70,7 +70,18 @@
                         <p class="lead mb-0" th:if="${searchText != null && searchText != ''}"
                            th:text="${searchText}">
                         </p>
-                        <!-- TODO: agregar más cosas acá -->
+                        <form action="/alquileres/eventos" method="get">
+                            <div class="mb-3">
+                                <label for="minPrice" class="form-label">Precio mínimo:</label>
+                                <input type="number" class="form-control" id="minPrice" name="minPrice">
+                            </div>
+                            <div class="mb-3">
+                                <label for="maxPrice" class="form-label">Precio máximo:</label>
+                                <input type="number" class="form-control" id="maxPrice" name="maxPrice">
+                            </div>
+                            <button type="submit" class="btn btn-primary">Filtrar</button>
+                        </form>
+                        <!--TODO: agregar más cosas acá-->
 
                     </div>
                     <div class="col-9">
@@ -92,13 +103,16 @@
                                     <img class="card-img top" th:src="@{${'/display?id=' + alquiler.getId()}}" alt="">
                                 </div>
                                 <div class="card-body">
-                                    <h5 th:text="${alquiler.nombre}" class="card-title"></h5>
-                                    <p th:text="${alquiler.estrellas}"> estrellas</p>
-                                    <div>$<p th:text="${alquiler.precio}"></p></div>
-                                    <div><span th:text="${alquiler.cantidadHabitaciones}"> habitaciones</span></div>
-                                    <div>Bufet<span th:text="${alquiler.hayBufetGratis}"></span></div>
-                                    <p th:if="${alquiler.hayBufetGratis}">Buffet gratis</p>
-                                    <p th:if="${alquiler.hayWifi}">Wifi</p>
+                                    <h5 th:text="${alquiler.getTitulo()}" class="card-title"></h5>
+                                    <p th:text="${alquiler.estrellas} + ' estrellas'"></p>
+                                    <p th:text="'$ ' + ${alquiler.precio} + ' pesos'"></p>
+                                    <p th:text="${alquiler.cantidadHabitaciones} + ' habitaciones'"></p>
+                                    <div th:if="${alquiler.hayBufetGratis}">
+                                        <p>Buffet gratis</p>
+                                    </div>
+                                    <div th:if="${alquiler.hayWifi}">
+                                        <p>WiFi gratis</p>
+                                    </div>
                                 </div>
                             </div>
                         </div>

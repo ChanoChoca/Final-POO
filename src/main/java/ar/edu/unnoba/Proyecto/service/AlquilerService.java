@@ -17,4 +17,6 @@ public interface AlquilerService {
     Page<Alquiler> getPage(Pageable pageable);
     Page<Alquiler> getPageWithTitleFilter(int page, int size, String title);
     byte[] getImageBytes(Long id) throws SQLException;
+
+    Page<Alquiler> getPageWithTitleAndPriceFilter(int i, int size, String title, Integer minPrice, Integer maxPrice);
 }
