@@ -53,7 +53,7 @@
         <section class="pb-5 pt-5 mt-5 mb-5 row">
             <nav class="mx-auto col-9 col-md-6" data-aos="fade-down" data-aos-easing="linear" data-aos-duration="1000">
                 <p class="lead mb-0" th:if="${searchText != null && searchText != ''}" th:text="'Usted ha buscado: ' + ${searchText}"></p>
-                <form class="d-flex" role="search" th:action="@{/administrador/eventos}" method="get">
+                <form class="d-flex" role="search" th:action="@{/administrador/alquileres}" method="get">
                     <input class="form-control rounded-start pt-0 pb-0 ps-1 pe-1 searcher" type="search" placeholder="Escriba texto aquí..." aria-label="Search" name="title">
                     <button class="rounded-end btn rounded-0 btn-pseudoclase" type="submit">Buscar</button>
                 </form>
@@ -70,44 +70,42 @@
                 <div class="container">
                     <div class="d-flex flex-row align-items-center justify-content-center gap-3 pt-3 paginado">
                         <a th:if="${currentPage > 1}"
-                           th:href="@{'/administrador/eventos?page=' + ${currentPage - 1}}">
+                           th:href="@{'/administrador/alquileres?page=' + ${currentPage - 1}}">
                             <img src="../../static/imagenes/izquierda.svg" width="30" height="30" alt>
                         </a>
                         <span class="fs-5 text-white">Página <span th:text="${currentPage}"></span> de <span th:text="${totalPages}"></span></span>
                         <a th:if="${currentPage < totalPages}"
-                           th:href="@{'/administrador/eventos?page=' + ${currentPage + 1}}">
+                           th:href="@{'/administrador/alquileres?page=' + ${currentPage + 1}}">
                             <img src="../../static/imagenes/izquierda.svg" style="transform: rotate(180deg)" width="30" height="30" alt>
                         </a>
                     </div>
 
-                    <div class="d-grid card-eventos gap-5 pb-5 pt-5" th:if="${not #lists.isEmpty(eventos)}">
-                        <div th:each="evento : ${eventos}">
+                    <div class="d-grid card-eventos gap-5 pb-5 pt-5" th:if="${not #lists.isEmpty(alquileres)}">
+                        <div th:each="alquiler : ${alquileres}">
                             <div class="card">
                                 <div class="ratio ratio-16x9">
-                                    <img class="card-img top" th:src="@{${'/display?id=' + evento.getId()}}" alt="">
+                                    <img class="card-img top" th:src="@{${'/display/alquiler?id=' + alquiler.getId()}}" alt="">
                                 </div>
                                 <div class="card-body">
-                                    <h5 th:text="${evento.titulo}" class="card-title"></h5>
-                                    <p th:text="${#strings.length(evento.descripcion) &gt; 100} ? ${#strings.substring(evento.descripcion, 0, 100) + '...'} : ${evento.descripcion}" class="card-text"></p>
-                                    <blockquote class="blockquote pt-1">
-                                        <div class="blockquote-footer"><span th:text="${evento.usuario.username}"></span> | <span th:text="${evento.fecha}"></span></div>
-                                    </blockquote>
-                                    <a th:href="@{'/administrador/evento/' + ${evento.getId()}}" class="btn rounded-0 btn-pseudoclase">Modificar</a>
-                                    <a th:href="@{'/administrador/eventos/eliminar/' + ${evento.getId()}}" class="btn rounded-0 btn-pseudoclase">Eliminar</a>
+                                    <h5 th:text="${alquiler.titulo}" class="card-title"></h5>
+                                    <p th:text="${alquiler.precio}"></p>
+
+                                    <a th:href="@{'/administrador/alquiler/' + ${alquiler.getId()}}" class="btn rounded-0 btn-pseudoclase">Modificar</a>
+                                    <a th:href="@{'/administrador/alquileres/eliminar/' + ${alquiler.getId()}}" class="btn rounded-0 btn-pseudoclase">Eliminar</a>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div th:remove="all" th:if="${#lists.isEmpty(eventos)}"></div>
+                    <div th:remove="all" th:if="${#lists.isEmpty(alquileres)}"></div>
 
                     <div class="d-flex flex-row align-items-center justify-content-center gap-3 pb-3 paginado">
                         <a th:if="${currentPage > 1}"
-                           th:href="@{'/administrador/eventos?page=' + ${currentPage - 1}}">
+                           th:href="@{'/administrador/alquileres?page=' + ${currentPage - 1}}">
                             <img src="../../static/imagenes/izquierda.svg" width="30" height="30" alt>
                         </a>
                         <span class="fs-5 text-white">Página <span th:text="${currentPage}"></span> de <span th:text="${totalPages}"></span></span>
                         <a th:if="${currentPage < totalPages}"
-                           th:href="@{'/administrador/eventos?page=' + ${currentPage + 1}}">
+                           th:href="@{'/administrador/alquileres?page=' + ${currentPage + 1}}">
                             <img src="../../static/imagenes/izquierda.svg" style="transform: rotate(180deg)" width="30" height="30" alt>
                         </a>
                     </div>

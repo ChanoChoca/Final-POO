@@ -26,6 +26,7 @@ public class Alquiler {
 
     @Min(1)
     @Max(5)
+    @Column(name="estrellas")
     private int estrellas;
 
     @Column(name="cant_habitaciones")
@@ -108,5 +109,4 @@ public class Alquiler {
         byte[] bytes = file.getBytes();
         this.imagen = new javax.sql.rowset.serial.SerialBlob(bytes);
     }
-
 }

@@ -46,17 +46,12 @@ public class AlquilerServiceImpl implements AlquilerService{
         return alquilerRepository.findAll(pageable);
     }
 
-
-    private Page<Alquiler> findByTitleContainingIgnoreCase(String title, PageRequest pageRequest) {
-        return alquilerRepository.findAlquilerByTituloContainingIgnoreCase(title, pageRequest);
-    }
-
     @Override
     public Page<Alquiler> getPageWithTitleFilter(int page, int size, String title) {
 
         PageRequest pageRequest = PageRequest.of(page, size);
-        if (title != null && !title.isEmpty()) {
-            return findByTitleContainingIgnoreCase(title, pageRequest);
+        if (title != null) {
+            return alquilerRepository.findByTituloContainingIgnoreCase(title, pageRequest);
         } else {
             return getPage(pageRequest);
         }
@@ -66,32 +61,21 @@ public class AlquilerServiceImpl implements AlquilerService{
     public Page<Alquiler> getPageWithTitleAndPriceFilter(int page, int size, String title, Integer minPrice, Integer maxPrice) {
         PageRequest pageRequest = PageRequest.of(page, size);
 
-        if (title != null && !title.isEmpty()) {
+        if (title != null) {
             if (minPrice != null && maxPrice != null) {
                 // Filtrar por título y rango de precios
                 return alquilerRepository.findByTituloContainingIgnoreCaseAndPrecioBetween(title, minPrice, maxPrice, pageRequest);
             } else if (minPrice != null) {
                 // Filtrar por título y precio mínimo
                 return alquilerRepository.findByTituloContainingIgnoreCaseAndPrecioGreaterThanEqual(title, minPrice, pageRequest);
-            } else if (maxPrice != null) {
+            } else { // if (maxPrice != null)
                 // Filtrar por título y precio máximo
                 return alquilerRepository.findByTituloContainingIgnoreCaseAndPrecioLessThanEqual(title, maxPrice, pageRequest);
-            } else {
-                // Si no se proporcionan parámetros de precio, usar solo el filtro de título
-                return alquilerRepository.findByTituloContainingIgnoreCase(title, pageRequest);
             }
         } else {
-            // Si no se proporciona título, solo se filtra por precio
-            if (minPrice != null && maxPrice != null) {
-                // Filtrar solo por rango de precios
-                return alquilerRepository.findByPrecioBetween(minPrice, maxPrice, pageRequest);
-            } else {
-                // Si no se proporcionan parámetros de título o precio, obtener todos los alquileres
-                return alquilerRepository.findAll(pageRequest);
-            }
+            return alquilerRepository.findAll(pageRequest);
         }
     }
-
 
     @Override
     public byte[] getImageBytes(Long id) throws SQLException {

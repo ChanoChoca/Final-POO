@@ -34,7 +34,7 @@
                     <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
                         <div class="navbar-nav text-center ms-auto">
                             <a class="nav-link" aria-current="page" href="/visitante/inicio">Inicio</a>
-                            <a class="nav-link" href="/alquiler/alquileres">Alquileres</a>
+                            <a class="nav-link" href="/visitante/alquileres">Alquileres</a>
                             <a class="nav-link" href="/visitante/eventos">Eventos</a>
                             <a class="nav-link" href="/visitante/actividades">Actividades</a>
                             <a class="nav-link" href="/visitante/historia">Historia</a>
@@ -50,7 +50,7 @@
                 <h2 class="text-center mb-0" data-aos="fade-right" data-aos-easing="linear" data-aos-duration="1000">Descubre Nuestros Próximas Actividades</h2>
 
                 <nav data-aos="fade-left" data-aos-easing="linear" data-aos-duration="1000">
-                    <form class="d-flex" role="search" th:action="@{/alquiler/alquileres}" method="get">
+                    <form class="d-flex" role="search" th:action="@{/visitante/alquileres}" method="get">
                         <input class="form-control rounded-start pt-0 pb-0 ps-1 pe-1 searcher" type="search" placeholder="Escriba texto aquí..." aria-label="Search" name="title">
                         <button class="rounded-end btn rounded-0 btn-pseudoclase" type="submit">Buscar</button>
                     </form>
@@ -70,7 +70,7 @@
                         <p class="lead mb-0" th:if="${searchText != null && searchText != ''}"
                            th:text="${searchText}">
                         </p>
-                        <form action="/alquileres/eventos" method="get">
+                        <form action="/alquileres/eventos" role="search" th:action="@{/visitante/alquileres}" method="get">
                             <div class="mb-3">
                                 <label for="minPrice" class="form-label">Precio mínimo:</label>
                                 <input type="number" class="form-control" id="minPrice" name="minPrice">
@@ -87,12 +87,12 @@
                     <div class="col-9">
                         <div class="d-flex flex-row align-items-center justify-content-center gap-3 pt-3 paginado">
                             <a th:if="${currentPage > 1}"
-                               th:href="@{'/alquileres/eventos?page=' + ${currentPage - 1}}">
+                               th:href="@{'/alquileres/alquileres?page=' + ${currentPage - 1}}">
                                 <img src="../../static/imagenes/izquierda.svg" width="30" height="30" alt>
                             </a>
                             <span class="fs-5 text-white">Página <span th:text="${currentPage}"></span> de <span th:text="${totalPages}"></span></span>
                             <a th:if="${currentPage < totalPages}"
-                               th:href="@{'/visitante/eventos?page=' + ${currentPage + 1}}">
+                               th:href="@{'/visitante/alquileres?page=' + ${currentPage + 1}}">
                                 <img src="../../static/imagenes/izquierda.svg" style="transform: rotate(180deg)" width="30" height="30" alt>
                             </a>
                         </div>
@@ -100,7 +100,7 @@
                         <div class="d-grid card-eventos gap-5 pb-5 pt-5">
                             <div class="card" th:each="alquiler : ${alquileres}">
                                 <div class="ratio ratio-16x9">
-                                    <img class="card-img top" th:src="@{${'/display?id=' + alquiler.getId()}}" alt="">
+                                    <img class="card-img top" th:src="@{${'/display/alquiler?id=' + alquiler.getId()}}" alt>
                                 </div>
                                 <div class="card-body">
                                     <h5 th:text="${alquiler.getTitulo()}" class="card-title"></h5>
@@ -119,12 +119,12 @@
 
                         <div class="d-flex flex-row align-items-center justify-content-center gap-3 pb-3 paginado">
                             <a th:if="${currentPage > 1}"
-                               th:href="@{'/visitante/eventos?page=' + ${currentPage - 1}}">
+                               th:href="@{'/visitante/alquileres?page=' + ${currentPage - 1}}">
                                 <img src="../../static/imagenes/izquierda.svg" width="30" height="30" alt>
                             </a>
                             <span class="fs-5 text-white">Página <span th:text="${currentPage}"></span> de <span th:text="${totalPages}"></span></span>
                             <a th:if="${currentPage < totalPages}"
-                               th:href="@{'/visitante/eventos?page=' + ${currentPage + 1}}">
+                               th:href="@{'/visitante/alquileres?page=' + ${currentPage + 1}}">
                                 <img src="../../static/imagenes/izquierda.svg" style="transform: rotate(180deg)" width="30" height="30" alt>
                             </a>
                         </div>

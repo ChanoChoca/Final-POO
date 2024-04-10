@@ -328,6 +328,24 @@ public class AdministradorController {
         return "administradores/nuevo-usuario";
     }//FUNCIONALIDAD: procesa el formulario de modificación de un uusario y guarda los cambios
 
+    @GetMapping("/alquileres")
+    public String alquileres(Model model,
+                              @RequestParam(defaultValue = "1") int page,
+                              @RequestParam(defaultValue = "9") int size,
+                              @RequestParam(required = false, defaultValue = "") String title,
+                              Authentication authentication) {
+        User sessionUser = (User) authentication.getPrincipal();
+
+        Page<Alquiler> alquilerPage = alquilerService.getPageWithTitleFilter(page - 1, size, title);
+
+        model.addAttribute("alquileres", alquilerPage);
+        model.addAttribute("currentPage", page); // info de la pag actual para cambiar de pagina
+        model.addAttribute("totalPages", alquilerPage.getTotalPages()); // cant total de paginas
+        model.addAttribute("user", sessionUser);
+        model.addAttribute("searchText", title);
+        return "administradores/alquileres";
+    }
+
     @GetMapping("/alquileres/nuevo")
     public String crearAlquiler(Model model, Authentication authentication) {
         User sessionUser = (User) authentication.getPrincipal();

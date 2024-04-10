@@ -62,14 +62,14 @@ public class ActividadServiceImpl implements ActividadService {
         }
     }
 
-    /*@Override
+    @Override
     public byte[] getImageBytes(Long id) throws SQLException {
         Actividad actividad = actividadRepository.findById(id).orElse(null);
         if (actividad != null) {
-            return actividad.getImagen().getBytes(1, (int) actividad.getImagen().length());
+            return actividad.getImage().getBytes(1, (int) actividad.getImage().length());
         } else {
             // Manejar el caso en que el evento no se encuentre
             return null;
         }
-    }*/
+    }
 }

@@ -131,7 +131,7 @@ public class VisitanteController {
         Page<Alquiler> alquilerPage;
 
         if (minPrice != null || maxPrice != null) {
-            // Si se proporcionan tanto el precio mínimo como el máximo, filtrar por ambos
+            // Si se proporcionan el precio mínimo o el máximo, filtrar por ambos
             alquilerPage = alquilerService.getPageWithTitleAndPriceFilter(page - 1, size, title, minPrice, maxPrice);
         } else {
             // Si no se proporcionan parámetros de precio, obtener alquileres con el filtro de título solamente
