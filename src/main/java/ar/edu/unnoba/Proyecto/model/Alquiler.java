@@ -42,15 +42,15 @@ public class Alquiler {
     @Column(name="imagen")
     private Blob imagen;
 
+    @OneToOne
+    @JoinColumn(name="cart_details_id")
+    private CartDetails cartDetails;
+
     public Alquiler() {
     }
 
     public Long getId() {
         return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public String getTitulo() {
@@ -108,5 +108,13 @@ public class Alquiler {
     public void setImagen(MultipartFile file) throws IOException, SQLException {
         byte[] bytes = file.getBytes();
         this.imagen = new javax.sql.rowset.serial.SerialBlob(bytes);
+    }
+
+    public CartDetails getCartDetails() {
+        return cartDetails;
+    }
+
+    public void setCartDetails(CartDetails cartDetails) {
+        this.cartDetails = cartDetails;
     }
 }

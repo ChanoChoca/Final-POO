@@ -4,15 +4,17 @@ import ar.edu.unnoba.Proyecto.model.Actividad;
 import ar.edu.unnoba.Proyecto.model.Alquiler;
 import ar.edu.unnoba.Proyecto.model.Evento;
 import ar.edu.unnoba.Proyecto.model.Subscriptor;
-import ar.edu.unnoba.Proyecto.service.ActividadService;
-import ar.edu.unnoba.Proyecto.service.AlquilerService;
-import ar.edu.unnoba.Proyecto.service.EventoService;
-import ar.edu.unnoba.Proyecto.service.SubscriptorService;
+import ar.edu.unnoba.Proyecto.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
+import java.util.Date;
 
 @Controller
 @RequestMapping("/visitante")
@@ -143,9 +145,31 @@ public class VisitanteController {
         return "visitantes/alquileres";
     }
 
-    @PostMapping("/alquileres")
-    public String compra(Model model) {
+    @GetMapping("/cart-details/{id}")
+    public String cartDetails(@PathVariable Long id,
+                           Model model,
+                           @RequestParam(required = false) LocalDate desde,
+                           @RequestParam(required = false) LocalDate hasta) {
+        model.addAttribute("alquiler", alquilerService.get(id));
+        return "visitantes/cart-details";
+    }
 
-        return "redirect:/visitante/inicio";
+    @PostMapping("/cart-details/{id}")
+    public String cartDetails(@PathVariable Long id,
+                              @RequestParam("desde") LocalDate desde,
+                              @RequestParam("hasta") LocalDate hasta) {
+
+        Alquiler alquiler = alquilerService.get(id);
+        alquiler.getCartDetails().setDesde(desde);
+        alquiler.getCartDetails().setHasta(hasta);
+        alquiler.getCartDetails().setTotal((int) (alquiler.getPrecio() * ChronoUnit.DAYS.between(desde, hasta)));
+
+        return "redirect:/visitante/checkout/{id}";
+    }
+
+    @GetMapping("/checkout/{id}")
+    public String checkout(@PathVariable Long id, Model model) {
+        model.addAttribute("alquiler", alquilerService.get(id));
+        return "visitantes/checkout";
     }
 }
