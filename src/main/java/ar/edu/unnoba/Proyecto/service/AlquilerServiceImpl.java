@@ -2,13 +2,19 @@ package ar.edu.unnoba.Proyecto.service;
 
 import ar.edu.unnoba.Proyecto.model.Alquiler;
 import ar.edu.unnoba.Proyecto.repository.AlquilerRepository;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Predicate;
+import jakarta.persistence.criteria.Root;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -42,39 +48,44 @@ public class AlquilerServiceImpl implements AlquilerService{
     }
 
     @Override
-    public Page<Alquiler> getPage(Pageable pageable) {
-        return alquilerRepository.findAll(pageable);
+    public Page<Alquiler> getPageWithoutFilter(int page, int size) {
+        PageRequest pageRequest = PageRequest.of(page, size);
+        return alquilerRepository.findAll(pageRequest);
     }
 
     @Override
-    public Page<Alquiler> getPageWithTitleFilter(int page, int size, String title) {
+    public Page<Alquiler> getPageWithFilters(int pagina, int tamanioPagina, String titulo, Integer precioMinimo, Integer precioMaximo, Boolean wifi, Boolean buffet) {
+        Pageable paginacion = PageRequest.of(pagina, tamanioPagina);
 
-        PageRequest pageRequest = PageRequest.of(page, size);
-        if (title != null) {
-            return alquilerRepository.findByTituloContainingIgnoreCase(title, pageRequest);
-        } else {
-            return getPage(pageRequest);
-        }
-    }
+        Specification<Alquiler> especificacion = new Specification<Alquiler>() {
+            @Override
+            public Predicate toPredicate(Root<Alquiler> raiz, CriteriaQuery<?> consulta, CriteriaBuilder builder) {
+                List<Predicate> predicados = new ArrayList<>();
 
-    @Override
-    public Page<Alquiler> getPageWithTitleAndPriceFilter(int page, int size, String title, Integer minPrice, Integer maxPrice) {
-        PageRequest pageRequest = PageRequest.of(page, size);
+                if (titulo != null && !titulo.isEmpty()) {
+                    predicados.add(builder.like(raiz.get("titulo"), "%" + titulo + "%"));
+                }
 
-        if (title != null) {
-            if (minPrice != null && maxPrice != null) {
-                // Filtrar por título y rango de precios
-                return alquilerRepository.findByTituloContainingIgnoreCaseAndPrecioBetween(title, minPrice, maxPrice, pageRequest);
-            } else if (minPrice != null) {
-                // Filtrar por título y precio mínimo
-                return alquilerRepository.findByTituloContainingIgnoreCaseAndPrecioGreaterThanEqual(title, minPrice, pageRequest);
-            } else { // if (maxPrice != null)
-                // Filtrar por título y precio máximo
-                return alquilerRepository.findByTituloContainingIgnoreCaseAndPrecioLessThanEqual(title, maxPrice, pageRequest);
+                if (precioMinimo != null) {
+                    predicados.add(builder.greaterThanOrEqualTo(raiz.get("precio"), precioMinimo));
+                }
+
+                if (precioMaximo != null) {
+                    predicados.add(builder.lessThanOrEqualTo(raiz.get("precio"), precioMaximo));
+                }
+
+                if (wifi != null) {
+                    predicados.add(wifi ? builder.isTrue(raiz.get("hayWifi")) : builder.isFalse(raiz.get("hayWifi")));
+                }
+                if (buffet != null) {
+                    predicados.add(buffet ? builder.isTrue(raiz.get("hayBufetGratis")) : builder.isFalse(raiz.get("hayBufetGratis")));
+                }
+
+                return builder.and(predicados.toArray(new Predicate[0]));
             }
-        } else {
-            return alquilerRepository.findAll(pageRequest);
-        }
+        };
+
+        return alquilerRepository.findAll(especificacion, paginacion);
     }
 
     @Override

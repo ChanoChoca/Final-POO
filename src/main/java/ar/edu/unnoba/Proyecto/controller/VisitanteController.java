@@ -118,24 +118,22 @@ public class VisitanteController {
         return "visitantes/actividades";
     }
 
-
-
     @GetMapping("/alquileres")
     public String alquileres(Model model,
                              @RequestParam(defaultValue = "1") int page,
                              @RequestParam(defaultValue = "9") int size,
                              @RequestParam(required = false, defaultValue = "") String title,
                              @RequestParam(required = false) Integer minPrice,
-                             @RequestParam(required = false) Integer maxPrice) {
+                             @RequestParam(required = false) Integer maxPrice,
+                             @RequestParam(required = false, defaultValue = "false") Boolean wifi,
+                             @RequestParam(required = false, defaultValue = "false") Boolean bufet) {
 
         Page<Alquiler> alquilerPage;
 
-        if (minPrice != null || maxPrice != null) {
-            // Si se proporcionan el precio mínimo o el máximo, filtrar por ambos
-            alquilerPage = alquilerService.getPageWithTitleAndPriceFilter(page - 1, size, title, minPrice, maxPrice);
+        if (!title.isEmpty() || minPrice != null || maxPrice != null || wifi || bufet) {
+            alquilerPage = alquilerService.getPageWithFilters(page - 1, size, title, minPrice, maxPrice, wifi, bufet);
         } else {
-            // Si no se proporcionan parámetros de precio, obtener alquileres con el filtro de título solamente
-            alquilerPage = alquilerService.getPageWithTitleFilter(page - 1, size, title);
+            alquilerPage = alquilerService.getPageWithoutFilter(page - 1, size);
         }
 
         model.addAttribute("alquileres", alquilerPage);
@@ -144,7 +142,6 @@ public class VisitanteController {
         model.addAttribute("searchText", title);
         return "visitantes/alquileres";
     }
-
 
     @PostMapping("/alquileres")
     public String compra(Model model) {

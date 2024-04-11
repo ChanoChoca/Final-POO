@@ -336,7 +336,7 @@ public class AdministradorController {
                               Authentication authentication) {
         User sessionUser = (User) authentication.getPrincipal();
 
-        Page<Alquiler> alquilerPage = alquilerService.getPageWithTitleFilter(page - 1, size, title);
+        Page<Alquiler> alquilerPage = alquilerService.getPageWithoutFilter(page - 1, size);
 
         model.addAttribute("alquileres", alquilerPage);
         model.addAttribute("currentPage", page); // info de la pag actual para cambiar de pagina
