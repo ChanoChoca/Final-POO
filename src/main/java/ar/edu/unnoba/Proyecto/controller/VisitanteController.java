@@ -2,21 +2,15 @@ package ar.edu.unnoba.Proyecto.controller;
 
 import ar.edu.unnoba.Proyecto.model.*;
 import ar.edu.unnoba.Proyecto.service.*;
-import com.stripe.Stripe;
-import com.stripe.exception.StripeException;
-import com.stripe.model.Charge;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
-import java.util.Date;
-import java.util.Map;
 
 @Controller
 @RequestMapping("/visitante")
@@ -151,12 +145,13 @@ public class VisitanteController {
 
     @GetMapping("/cart-details/{id}")
     public String cartDetails(@PathVariable Long id,
-                           Model model,
-                           @RequestParam(required = false) LocalDate desde,
-                           @RequestParam(required = false) LocalDate hasta) {
-        model.addAttribute("alquiler", alquilerService.get(id));
+                              Model model) {
+        Alquiler alquiler = alquilerService.get(id);
+        model.addAttribute("alquiler", alquiler);
+
         return "visitantes/cart-details";
     }
+
 
     @PostMapping("/cart-details/{id}")
     public String cartDetails(@PathVariable Long id,
@@ -172,33 +167,15 @@ public class VisitanteController {
         return "redirect:/visitante/checkout/" + id;
     }
 
-    @GetMapping("/checkout/{id}")
+    @Value("${STRIPE_PUBLIC_KEY}")
+    private String stripePublicKey;
+
+    @RequestMapping("/checkout/{id}")
     public String checkout(@PathVariable Long id, Model model) {
         model.addAttribute("alquiler", alquilerService.get(id));
+        model.addAttribute("amount", alquilerService.get(id).getCartDetails().getTotal() * 100); // in cents
+        model.addAttribute("stripePublicKey", stripePublicKey);
+        model.addAttribute("currency", ChargeRequest.Currency.USD);
         return "visitantes/checkout";
-    }
-
-    @Value("${stripe.secret.key}")
-    private String stripeSecretKey;
-
-    @PostMapping("/charge")
-    public String chargeCard(@RequestParam("stripeToken") String token,
-                             @RequestParam("amount") int amount) {
-        Stripe.apiKey = stripeSecretKey;
-
-        try {
-            // Crear el cargo utilizando el token de Stripe
-            Charge charge = Charge.create(Map.of(
-                    "amount", amount,
-                    "currency", "usd",
-                    "source", token
-            ));
-
-            // El pago se ha realizado con éxito
-            return "redirect:/payment-success";
-        } catch (StripeException e) {
-            // El pago ha fallado, manejar el error
-            return "redirect:/payment-failure";
-        }
     }
 }

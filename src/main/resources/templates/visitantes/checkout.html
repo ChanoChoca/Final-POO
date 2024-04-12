@@ -5,59 +5,23 @@
         <title>Title</title>
     </head>
     <body>
-        <div class="container">
-            <h1>Realizar Pago</h1>
-            <form id="payment-form">
-                <div id="card-element">
-                    <!-- Elementos de tarjeta Stripe se insertarán aquí -->
-                </div>
-                <button id="submit">
-                    Pagar ahora
-                </button>
-                <div id="error-message"></div>
-            </form>
-        </div>
-
-        <script src="https://js.stripe.com/v3/"></script>
-        <script>
-            // Configurar Stripe.js con tu clave pública
-            var stripe = Stripe('pk_test_51P4mnBLa3Gzblw4rnAOkhERTCQOPOdB7H1zWT4WqtPiZgNxc6oxuovLL6pw28EH14SW1u0CmDAOpyYJcvyatLzZs00ubMA2ghI');
-
-            // Configurar los elementos de Stripe.js
-            var elements = stripe.elements();
-            var cardElement = elements.create('card');
-            cardElement.mount('#card-element');
-
-            // Manejar el envío del formulario
-            var form = document.getElementById('payment-form');
-            form.addEventListener('submit', function(event) {
-                event.preventDefault();
-
-                stripe.createToken(cardElement).then(function(result) {
-                    if (result.error) {
-                        // Mostrar un mensaje de error al usuario
-                        var errorElement = document.getElementById('error-message');
-                        errorElement.textContent = result.error.message;
-                    } else {
-                        // Enviar el token al servidor
-                        stripeTokenHandler(result.token);
-                    }
-                });
-            });
-
-            // Enviar el token al servidor
-            function stripeTokenHandler(token) {
-                // Insertar el token en un campo oculto para enviarlo al backend
-                var form = document.getElementById('payment-form');
-                var hiddenInput = document.createElement('input');
-                hiddenInput.setAttribute('type', 'hidden');
-                hiddenInput.setAttribute('name', 'stripeToken');
-                hiddenInput.setAttribute('value', token.id);
-                form.appendChild(hiddenInput);
-
-                // Enviar el formulario al servidor
-                form.submit();
-            }
-        </script>
+        <form th:action="@{/charge}" action='/charge' method='POST' id='checkout-form'>
+            <input type='hidden' th:value='${amount}' name='amount' />
+            <label>Price:<span th:text='${amount/100}'></span></label>
+            <!-- NOTE: data-key/data-amount/data-currency will be rendered by Thymeleaf -->
+            <script
+                    src='https://checkout.stripe.com/checkout.js'
+                    class='stripe-button'
+                    th:attr='data-key=${stripePublicKey},
+             data-amount=${amount},
+             data-currency=${currency}'
+                    data-name='Sociedad Española de Junin'
+                    data-description='Spring course checkout'
+                    data-image
+                            ='https://www.baeldung.com/wp-content/themes/baeldung/favicon/android-chrome-192x192.png'
+                    data-locale='auto'
+                    data-zip-code='false'>
+            </script>
+        </form>
     </body>
 </html>
