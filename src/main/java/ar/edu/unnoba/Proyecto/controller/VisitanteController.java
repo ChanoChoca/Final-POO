@@ -1,22 +1,36 @@
 package ar.edu.unnoba.Proyecto.controller;
 
+<<<<<<< HEAD
 import ar.edu.unnoba.Proyecto.model.*;
 import ar.edu.unnoba.Proyecto.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+=======
+import ar.edu.unnoba.Proyecto.model.Actividad;
+import ar.edu.unnoba.Proyecto.model.Evento;
+import ar.edu.unnoba.Proyecto.model.Subscriptor;
+import ar.edu.unnoba.Proyecto.service.ActividadService;
+import ar.edu.unnoba.Proyecto.service.EventoService;
+import ar.edu.unnoba.Proyecto.service.SubscriptorService;
+import org.springframework.beans.factory.annotation.Autowired;
+>>>>>>> c427349071f561d944152b3cf86e126fd43c88e0
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+<<<<<<< HEAD
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 
+=======
+>>>>>>> c427349071f561d944152b3cf86e126fd43c88e0
 @Controller
 @RequestMapping("/visitante")
 public class VisitanteController {
 
     private final EventoService eventoService;
+<<<<<<< HEAD
     private final SubscriptorService subscriptorService;
     private final ActividadService actividadService;
     private final AlquilerService alquilerService;
@@ -30,6 +44,19 @@ public class VisitanteController {
         this.actividadService = actividadService;
         this.alquilerService = alquilerService;
         this.cartDetailsService = cartDetailsService;
+=======
+
+    private final SubscriptorService subscriptorService;
+
+    private final ActividadService actividadService;
+
+
+    @Autowired
+    private VisitanteController(EventoService eventoService, SubscriptorService subscriptorService, ActividadService actividadService) {
+        this.eventoService = eventoService;
+        this.subscriptorService = subscriptorService;
+        this.actividadService = actividadService;
+>>>>>>> c427349071f561d944152b3cf86e126fd43c88e0
     }
 
     //*****************INICIO*****************
@@ -103,6 +130,11 @@ public class VisitanteController {
         return "visitantes/historia";
     }
 
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> c427349071f561d944152b3cf86e126fd43c88e0
     @GetMapping("/actividades")
     public String actividades(Model model,
                               @RequestParam(defaultValue = "1") int page,
@@ -117,6 +149,7 @@ public class VisitanteController {
         model.addAttribute("searchText", title);
         return "visitantes/actividades";
     }
+<<<<<<< HEAD
 
     @GetMapping("/alquileres")
     public String alquileres(Model model,
@@ -178,4 +211,6 @@ public class VisitanteController {
         model.addAttribute("currency", ChargeRequest.Currency.USD);
         return "visitantes/checkout";
     }
+=======
+>>>>>>> c427349071f561d944152b3cf86e126fd43c88e0
 }

@@ -14,7 +14,13 @@ public interface AlquilerService {
     void save(Alquiler alquiler);
     void delete(Long id);
 
+<<<<<<< HEAD
     Page<Alquiler> getPageWithoutFilter(int page, int size);
     byte[] getImageBytes(Long id) throws SQLException;
     Page<Alquiler> getPageWithFilters(int i, int size, String title, Integer minPrice, Integer maxPrice, Boolean wifi, Boolean bufet);
+=======
+    Page<Alquiler> getPage(Pageable pageable);
+    Page<Alquiler> getPageWithTitleFilter(int page, int size, String title);
+    byte[] getImageBytes(Long id) throws SQLException;
+>>>>>>> c427349071f561d944152b3cf86e126fd43c88e0
 }

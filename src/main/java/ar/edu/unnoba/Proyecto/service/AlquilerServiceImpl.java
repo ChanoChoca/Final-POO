@@ -2,16 +2,25 @@ package ar.edu.unnoba.Proyecto.service;
 
 import ar.edu.unnoba.Proyecto.model.Alquiler;
 import ar.edu.unnoba.Proyecto.repository.AlquilerRepository;
+<<<<<<< HEAD
 import jakarta.persistence.criteria.Predicate;
+=======
+>>>>>>> c427349071f561d944152b3cf86e126fd43c88e0
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+<<<<<<< HEAD
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+=======
+import org.springframework.stereotype.Service;
+
+import java.sql.SQLException;
+>>>>>>> c427349071f561d944152b3cf86e126fd43c88e0
 import java.util.List;
 
 @Service
@@ -45,6 +54,7 @@ public class AlquilerServiceImpl implements AlquilerService{
     }
 
     @Override
+<<<<<<< HEAD
     public Page<Alquiler> getPageWithoutFilter(int page, int size) {
         PageRequest pageRequest = PageRequest.of(page, size);
         return alquilerRepository.findAll(pageRequest);
@@ -80,6 +90,26 @@ public class AlquilerServiceImpl implements AlquilerService{
         };
 
         return alquilerRepository.findAll(especificacion, paginacion);
+=======
+    public Page<Alquiler> getPage(Pageable pageable) {
+        return alquilerRepository.findAll(pageable);
+    }
+
+
+    private Page<Alquiler> findByTitleContainingIgnoreCase(String title, PageRequest pageRequest) {
+        return alquilerRepository.findAlquilerByTituloContainingIgnoreCase(title, pageRequest);
+    }
+
+    @Override
+    public Page<Alquiler> getPageWithTitleFilter(int page, int size, String title) {
+
+        PageRequest pageRequest = PageRequest.of(page, size);
+        if (title != null && !title.isEmpty()) {
+            return findByTitleContainingIgnoreCase(title, pageRequest);
+        } else {
+            return getPage(pageRequest);
+        }
+>>>>>>> c427349071f561d944152b3cf86e126fd43c88e0
     }
 
     @Override

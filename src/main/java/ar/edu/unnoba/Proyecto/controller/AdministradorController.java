@@ -1,10 +1,19 @@
 package ar.edu.unnoba.Proyecto.controller;
 
 import ar.edu.unnoba.Proyecto.model.Actividad;
+<<<<<<< HEAD
 import ar.edu.unnoba.Proyecto.model.Alquiler;
 import ar.edu.unnoba.Proyecto.model.Evento;
 import ar.edu.unnoba.Proyecto.model.Usuario;
 import ar.edu.unnoba.Proyecto.service.*;
+=======
+import ar.edu.unnoba.Proyecto.model.Evento;
+import ar.edu.unnoba.Proyecto.model.Usuario;
+import ar.edu.unnoba.Proyecto.service.ActividadService;
+import ar.edu.unnoba.Proyecto.service.EnviarMailService;
+import ar.edu.unnoba.Proyecto.service.EventoService;
+import ar.edu.unnoba.Proyecto.service.UsuarioService;
+>>>>>>> c427349071f561d944152b3cf86e126fd43c88e0
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.security.core.Authentication;
@@ -30,15 +39,24 @@ public class AdministradorController {
     private final EnviarMailService enviarMailService;
 
     private final ActividadService actividadService;
+<<<<<<< HEAD
     private final AlquilerService alquilerService;
 
     @Autowired
     public AdministradorController(EventoService eventoService, UsuarioService usuarioService, EnviarMailService enviarMailService, ActividadService actividadService, AlquilerService alquilerService) {
+=======
+
+    @Autowired
+    public AdministradorController(EventoService eventoService, UsuarioService usuarioService, EnviarMailService enviarMailService, ActividadService actividadService) {
+>>>>>>> c427349071f561d944152b3cf86e126fd43c88e0
         this.eventoService = eventoService;
         this.usuarioService = usuarioService;
         this.enviarMailService = enviarMailService;
         this.actividadService = actividadService;
+<<<<<<< HEAD
         this.alquilerService = alquilerService;
+=======
+>>>>>>> c427349071f561d944152b3cf86e126fd43c88e0
 
     }
 
@@ -267,7 +285,11 @@ public class AdministradorController {
     }
 
     @GetMapping("/usuario/eliminar")
+<<<<<<< HEAD
     public String eliminarUsuario(Model model, Authentication authentication) {
+=======
+    public String eliminarUsuario(Model model, Authentication authentication){
+>>>>>>> c427349071f561d944152b3cf86e126fd43c88e0
         User sessionUser = (User) authentication.getPrincipal();
 
         model.addAttribute("usuarios", usuarioService.getAll());
@@ -328,6 +350,7 @@ public class AdministradorController {
         return "administradores/nuevo-usuario";
     }//FUNCIONALIDAD: procesa el formulario de modificación de un uusario y guarda los cambios
 
+<<<<<<< HEAD
     @GetMapping("/alquileres")
     public String alquileres(Model model,
                               @RequestParam(defaultValue = "1") int page,
@@ -416,4 +439,8 @@ public class AdministradorController {
         model.addAttribute("mensaje", "El alquiler ha sido eliminado exitosamente.");
         return "redirect:/administrador/inicio";
     }
+=======
+
+
+>>>>>>> c427349071f561d944152b3cf86e126fd43c88e0
 }

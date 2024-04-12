@@ -135,11 +135,14 @@ input:focus, textarea:focus {
         grid-template-rows: unset;
     }
 }
+<<<<<<< HEAD
 @media (min-width: 768px) {
     .card-alquileres{
         width: 100%;
     }
 }
+=======
+>>>>>>> c427349071f561d944152b3cf86e126fd43c88e0
 
 
 .box {

@@ -18,15 +18,23 @@ public class Alquiler {
     @Column(name="id")
     private Long id;
 
+<<<<<<< HEAD
     @Column(name="titulo")
     private String titulo;
+=======
+    @Column(name="nombre")
+    private int nombre;
+>>>>>>> c427349071f561d944152b3cf86e126fd43c88e0
 
     @Column(name="precio")
     private int precio;
 
     @Min(1)
     @Max(5)
+<<<<<<< HEAD
     @Column(name="estrellas")
+=======
+>>>>>>> c427349071f561d944152b3cf86e126fd43c88e0
     private int estrellas;
 
     @Column(name="cant_habitaciones")
@@ -42,10 +50,13 @@ public class Alquiler {
     @Column(name="imagen")
     private Blob imagen;
 
+<<<<<<< HEAD
     @OneToOne
     @JoinColumn(name="cart_details_id")
     private CartDetails cartDetails;
 
+=======
+>>>>>>> c427349071f561d944152b3cf86e126fd43c88e0
     public Alquiler() {
     }
 
@@ -53,12 +64,25 @@ public class Alquiler {
         return id;
     }
 
+<<<<<<< HEAD
     public String getTitulo() {
         return titulo;
     }
 
     public void setTitulo(String titulo) {
         this.titulo = titulo;
+=======
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public int getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(int nombre) {
+        this.nombre = nombre;
+>>>>>>> c427349071f561d944152b3cf86e126fd43c88e0
     }
 
     public int getPrecio() {
@@ -110,6 +134,7 @@ public class Alquiler {
         this.imagen = new javax.sql.rowset.serial.SerialBlob(bytes);
     }
 
+<<<<<<< HEAD
     public CartDetails getCartDetails() {
         return cartDetails;
     }
@@ -117,4 +142,6 @@ public class Alquiler {
     public void setCartDetails(CartDetails cartDetails) {
         this.cartDetails = cartDetails;
     }
+=======
+>>>>>>> c427349071f561d944152b3cf86e126fd43c88e0
 }

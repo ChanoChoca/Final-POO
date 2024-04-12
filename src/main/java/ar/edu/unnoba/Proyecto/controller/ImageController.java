@@ -3,7 +3,10 @@ package ar.edu.unnoba.Proyecto.controller;
 import ar.edu.unnoba.Proyecto.model.Actividad;
 import ar.edu.unnoba.Proyecto.model.Evento;
 import ar.edu.unnoba.Proyecto.service.ActividadService;
+<<<<<<< HEAD
 import ar.edu.unnoba.Proyecto.service.AlquilerService;
+=======
+>>>>>>> c427349071f561d944152b3cf86e126fd43c88e0
 import ar.edu.unnoba.Proyecto.service.EventoService;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +24,7 @@ public class ImageController {
     private final EventoService eventoService;
 
     private final ActividadService actividadService;
+<<<<<<< HEAD
     private final AlquilerService alquilerService;
 
     @Autowired
@@ -28,6 +32,13 @@ public class ImageController {
         this.eventoService = eventoService;
         this.actividadService = actividadService;
         this.alquilerService = alquilerService;
+=======
+
+    @Autowired
+    public ImageController(EventoService eventoService, ActividadService actividadService) {
+        this.eventoService = eventoService;
+        this.actividadService = actividadService;
+>>>>>>> c427349071f561d944152b3cf86e126fd43c88e0
     }
 
     // muestra la imagen dado un id
@@ -44,6 +55,7 @@ public class ImageController {
 
     @Transactional
     @GetMapping("/display/actividad")
+<<<<<<< HEAD
     public ResponseEntity<byte[]> displayActividadImage(@RequestParam("id") long id) throws SQLException {
         byte[] imageBytes = actividadService.getImageBytes(id);
         if (imageBytes != null) {
@@ -62,5 +74,11 @@ public class ImageController {
         } else {
             return ResponseEntity.notFound().build();
         }
+=======
+    public ResponseEntity<byte[]> displayActivityImage(@RequestParam("id") long id) throws SQLException {
+        Actividad actividad = actividadService.get(id);
+        byte [] imageBytes = actividad.getImage().getBytes(1,(int) actividad.getImage().length());
+        return ResponseEntity.ok().contentType(MediaType.IMAGE_JPEG).body(imageBytes);
+>>>>>>> c427349071f561d944152b3cf86e126fd43c88e0
     }
 }

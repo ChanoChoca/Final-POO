@@ -33,7 +33,11 @@ public class SecurityConfig implements WebMvcConfigurer {
 
         http.authorizeHttpRequests(configurer ->
                         configurer
+<<<<<<< HEAD
                                 .requestMatchers("/visitante/**", "/static/**", "/exception/**", "/display/**", "/charge").permitAll()
+=======
+                                .requestMatchers("/visitante/**", "/static/**", "/exception/**", "/display/**").permitAll()
+>>>>>>> c427349071f561d944152b3cf86e126fd43c88e0
                                 .anyRequest().authenticated()
                 )
                 .formLogin(form ->
@@ -61,4 +65,8 @@ public class SecurityConfig implements WebMvcConfigurer {
                 .addResourceLocations("classpath:/static/")
                 .resourceChain(true);
     }
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> c427349071f561d944152b3cf86e126fd43c88e0
