@@ -63,7 +63,7 @@
                         </td>
                         <td>
                             <p id="total-precio">Total: $0</p> <!-- TODO -->
-                            <form role="form" th:action="@{/visitante/cart-details/{id}}" method="post">
+                            <form role="form" th:action="@{'/visitante/cart-details/' + ${alquiler.id}}" method="post">
                                 <div class="mb-3">
                                     <label for="desde"></label>
                                     <input type="date" class="form-control" id="desde" name="desde">

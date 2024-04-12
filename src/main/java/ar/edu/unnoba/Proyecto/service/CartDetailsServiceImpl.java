@@ -1,15 +1,16 @@
 package ar.edu.unnoba.Proyecto.service;
 
-import ar.edu.unnoba.Proyecto.model.Actividad;
 import ar.edu.unnoba.Proyecto.model.CartDetails;
 import ar.edu.unnoba.Proyecto.repository.CartDetailsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class CartDetailsServiceImpl implements CartDetailsService{
 
-    private CartDetailsRepository cartDetailsRepository;
+    private final CartDetailsRepository cartDetailsRepository;
 
     @Autowired
     public CartDetailsServiceImpl(CartDetailsRepository cartDetailsRepository) {

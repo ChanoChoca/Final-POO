@@ -1,10 +1,63 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+    <head>
+        <meta charset="UTF-8">
+        <title>Title</title>
+    </head>
+    <body>
+        <div class="container">
+            <h1>Realizar Pago</h1>
+            <form id="payment-form">
+                <div id="card-element">
+                    <!-- Elementos de tarjeta Stripe se insertarán aquí -->
+                </div>
+                <button id="submit">
+                    Pagar ahora
+                </button>
+                <div id="error-message"></div>
+            </form>
+        </div>
 
-</body>
+        <script src="https://js.stripe.com/v3/"></script>
+        <script>
+            // Configurar Stripe.js con tu clave pública
+            var stripe = Stripe('pk_test_51P4mnBLa3Gzblw4rnAOkhERTCQOPOdB7H1zWT4WqtPiZgNxc6oxuovLL6pw28EH14SW1u0CmDAOpyYJcvyatLzZs00ubMA2ghI');
+
+            // Configurar los elementos de Stripe.js
+            var elements = stripe.elements();
+            var cardElement = elements.create('card');
+            cardElement.mount('#card-element');
+
+            // Manejar el envío del formulario
+            var form = document.getElementById('payment-form');
+            form.addEventListener('submit', function(event) {
+                event.preventDefault();
+
+                stripe.createToken(cardElement).then(function(result) {
+                    if (result.error) {
+                        // Mostrar un mensaje de error al usuario
+                        var errorElement = document.getElementById('error-message');
+                        errorElement.textContent = result.error.message;
+                    } else {
+                        // Enviar el token al servidor
+                        stripeTokenHandler(result.token);
+                    }
+                });
+            });
+
+            // Enviar el token al servidor
+            function stripeTokenHandler(token) {
+                // Insertar el token en un campo oculto para enviarlo al backend
+                var form = document.getElementById('payment-form');
+                var hiddenInput = document.createElement('input');
+                hiddenInput.setAttribute('type', 'hidden');
+                hiddenInput.setAttribute('name', 'stripeToken');
+                hiddenInput.setAttribute('value', token.id);
+                form.appendChild(hiddenInput);
+
+                // Enviar el formulario al servidor
+                form.submit();
+            }
+        </script>
+    </body>
 </html>

@@ -1,11 +1,12 @@
 package ar.edu.unnoba.Proyecto.controller;
 
-import ar.edu.unnoba.Proyecto.model.Actividad;
-import ar.edu.unnoba.Proyecto.model.Alquiler;
-import ar.edu.unnoba.Proyecto.model.Evento;
-import ar.edu.unnoba.Proyecto.model.Subscriptor;
+import ar.edu.unnoba.Proyecto.model.*;
 import ar.edu.unnoba.Proyecto.service.*;
+import com.stripe.Stripe;
+import com.stripe.exception.StripeException;
+import com.stripe.model.Charge;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/visitante")
@@ -24,14 +26,16 @@ public class VisitanteController {
     private final SubscriptorService subscriptorService;
     private final ActividadService actividadService;
     private final AlquilerService alquilerService;
+    private final CartDetailsService cartDetailsService;
 
 
     @Autowired
-    private VisitanteController(EventoService eventoService, SubscriptorService subscriptorService, ActividadService actividadService, AlquilerService alquilerService) {
+    private VisitanteController(EventoService eventoService, SubscriptorService subscriptorService, ActividadService actividadService, AlquilerService alquilerService, CartDetailsService cartDetailsService) {
         this.eventoService = eventoService;
         this.subscriptorService = subscriptorService;
         this.actividadService = actividadService;
         this.alquilerService = alquilerService;
+        this.cartDetailsService = cartDetailsService;
     }
 
     //*****************INICIO*****************
@@ -160,16 +164,41 @@ public class VisitanteController {
                               @RequestParam("hasta") LocalDate hasta) {
 
         Alquiler alquiler = alquilerService.get(id);
-        alquiler.getCartDetails().setDesde(desde);
-        alquiler.getCartDetails().setHasta(hasta);
-        alquiler.getCartDetails().setTotal((int) (alquiler.getPrecio() * ChronoUnit.DAYS.between(desde, hasta)));
+        CartDetails cart = new CartDetails(desde, hasta, (int) (alquiler.getPrecio() * ChronoUnit.DAYS.between(desde, hasta)));
+        cartDetailsService.save(cart);
+        alquiler.setCartDetails(cart);
+        alquilerService.save(alquiler);
 
-        return "redirect:/visitante/checkout/{id}";
+        return "redirect:/visitante/checkout/" + id;
     }
 
     @GetMapping("/checkout/{id}")
     public String checkout(@PathVariable Long id, Model model) {
         model.addAttribute("alquiler", alquilerService.get(id));
         return "visitantes/checkout";
+    }
+
+    @Value("${stripe.secret.key}")
+    private String stripeSecretKey;
+
+    @PostMapping("/charge")
+    public String chargeCard(@RequestParam("stripeToken") String token,
+                             @RequestParam("amount") int amount) {
+        Stripe.apiKey = stripeSecretKey;
+
+        try {
+            // Crear el cargo utilizando el token de Stripe
+            Charge charge = Charge.create(Map.of(
+                    "amount", amount,
+                    "currency", "usd",
+                    "source", token
+            ));
+
+            // El pago se ha realizado con éxito
+            return "redirect:/payment-success";
+        } catch (StripeException e) {
+            // El pago ha fallado, manejar el error
+            return "redirect:/payment-failure";
+        }
     }
 }

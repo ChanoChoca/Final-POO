@@ -25,6 +25,12 @@ public class CartDetails {
     public CartDetails() {
     }
 
+    public CartDetails(LocalDate desde, LocalDate hasta, int total) {
+        this.desde = desde;
+        this.hasta = hasta;
+        this.total = total;
+    }
+
     public Long getId() {
         return id;
     }
