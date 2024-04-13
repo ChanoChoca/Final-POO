@@ -57,12 +57,11 @@
                         src='https://checkout.stripe.com/checkout.js'
                         class='stripe-button'
                         th:attr='data-key=${stripePublicKey},
-             data-amount=${amount},
-             data-currency=${currency}'
+                      data-amount=${amount},
+                      data-currency=${currency},
+                      data-description=${alquiler.getTitulo()}'
                         data-name='Sociedad Española de Junin'
-                        data-description='Spring course checkout'
-                        data-image
-                                ='https://www.baeldung.com/wp-content/themes/baeldung/favicon/android-chrome-192x192.png'
+                        data-image='https://www.baeldung.com/wp-content/themes/baeldung/favicon/android-chrome-192x192.png'
                         data-locale='auto'
                         data-zip-code='false'>
                 </script>
