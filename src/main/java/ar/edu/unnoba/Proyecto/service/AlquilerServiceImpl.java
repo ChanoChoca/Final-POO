@@ -2,10 +2,7 @@ package ar.edu.unnoba.Proyecto.service;
 
 import ar.edu.unnoba.Proyecto.model.Alquiler;
 import ar.edu.unnoba.Proyecto.repository.AlquilerRepository;
-import jakarta.persistence.criteria.CriteriaBuilder;
-import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Predicate;
-import jakarta.persistence.criteria.Root;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -57,32 +54,29 @@ public class AlquilerServiceImpl implements AlquilerService{
     public Page<Alquiler> getPageWithFilters(int pagina, int tamanioPagina, String titulo, Integer precioMinimo, Integer precioMaximo, Boolean wifi, Boolean buffet) {
         Pageable paginacion = PageRequest.of(pagina, tamanioPagina);
 
-        Specification<Alquiler> especificacion = new Specification<Alquiler>() {
-            @Override
-            public Predicate toPredicate(Root<Alquiler> raiz, CriteriaQuery<?> consulta, CriteriaBuilder builder) {
-                List<Predicate> predicados = new ArrayList<>();
+        Specification<Alquiler> especificacion = (raiz, consulta, builder) -> {
+            List<Predicate> predicados = new ArrayList<>();
 
-                if (titulo != null && !titulo.isEmpty()) {
-                    predicados.add(builder.like(raiz.get("titulo"), "%" + titulo + "%"));
-                }
-
-                if (precioMinimo != null) {
-                    predicados.add(builder.greaterThanOrEqualTo(raiz.get("precio"), precioMinimo));
-                }
-
-                if (precioMaximo != null) {
-                    predicados.add(builder.lessThanOrEqualTo(raiz.get("precio"), precioMaximo));
-                }
-
-                if (wifi != null) {
-                    predicados.add(wifi ? builder.isTrue(raiz.get("hayWifi")) : builder.isFalse(raiz.get("hayWifi")));
-                }
-                if (buffet != null) {
-                    predicados.add(buffet ? builder.isTrue(raiz.get("hayBufetGratis")) : builder.isFalse(raiz.get("hayBufetGratis")));
-                }
-
-                return builder.and(predicados.toArray(new Predicate[0]));
+            if (titulo != null && !titulo.isEmpty()) {
+                predicados.add(builder.like(raiz.get("titulo"), "%" + titulo + "%"));
             }
+
+            if (precioMinimo != null) {
+                predicados.add(builder.greaterThanOrEqualTo(raiz.get("precio"), precioMinimo));
+            }
+
+            if (precioMaximo != null) {
+                predicados.add(builder.lessThanOrEqualTo(raiz.get("precio"), precioMaximo));
+            }
+
+            if (wifi != null) {
+                predicados.add(wifi ? builder.isTrue(raiz.get("hayWifi")) : builder.isFalse(raiz.get("hayWifi")));
+            }
+            if (buffet != null) {
+                predicados.add(buffet ? builder.isTrue(raiz.get("hayBufetGratis")) : builder.isFalse(raiz.get("hayBufetGratis")));
+            }
+
+            return builder.and(predicados.toArray(new Predicate[0]));
         };
 
         return alquilerRepository.findAll(especificacion, paginacion);

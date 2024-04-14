@@ -3,6 +3,7 @@ package ar.edu.unnoba.Proyecto.controller;
 import ar.edu.unnoba.Proyecto.model.*;
 import ar.edu.unnoba.Proyecto.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import org.threeten.bp.temporal.ChronoUnit;
 
 import java.time.LocalDate;
-//import java.time.temporal.*;
+//import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -22,15 +23,17 @@ public class VisitanteController {
     private final SubscriptorService subscriptorService;
     private final ActividadService actividadService;
     private final AlquilerService alquilerService;
+    private final CartDetailsService cartDetailsService;
     private final FamiliaService familiaService;
 
 
     @Autowired
-    private VisitanteController(EventoService eventoService, SubscriptorService subscriptorService, ActividadService actividadService, AlquilerService alquilerService, FamiliaService familiaService) {
+    private VisitanteController(EventoService eventoService, SubscriptorService subscriptorService, ActividadService actividadService, AlquilerService alquilerService, CartDetailsService cartDetailsService, FamiliaService familiaService) {
         this.eventoService = eventoService;
         this.subscriptorService = subscriptorService;
         this.actividadService = actividadService;
         this.alquilerService = alquilerService;
+        this.cartDetailsService = cartDetailsService;
         this.familiaService = familiaService;
     }
 
@@ -147,12 +150,13 @@ public class VisitanteController {
 
     @GetMapping("/cart-details/{id}")
     public String cartDetails(@PathVariable Long id,
-                           Model model,
-                           @RequestParam(required = false) LocalDate desde,
-                           @RequestParam(required = false) LocalDate hasta) {
-        model.addAttribute("alquiler", alquilerService.get(id));
+                              Model model) {
+        Alquiler alquiler = alquilerService.get(id);
+        model.addAttribute("alquiler", alquiler);
+
         return "visitantes/cart-details";
     }
+
 
     @PostMapping("/cart-details/{id}")
     public String cartDetails(@PathVariable Long id,
@@ -160,16 +164,23 @@ public class VisitanteController {
                               @RequestParam("hasta") LocalDate hasta) {
 
         Alquiler alquiler = alquilerService.get(id);
-        alquiler.getCartDetails().setDesde(desde);
-        alquiler.getCartDetails().setHasta(hasta);
-        //alquiler.getCartDetails().setTotal((int) (alquiler.getPrecio() * ChronoUnit.DAYS.between(desde, hasta)));
+        CartDetails cart = new CartDetails(desde, hasta, (int) (alquiler.getPrecio() * ChronoUnit.DAYS.between(desde, hasta)));
+        cartDetailsService.save(cart);
+        alquiler.setCartDetails(cart);
+        alquilerService.save(alquiler);
 
-        return "redirect:/visitante/checkout/{id}";
+        return "redirect:/visitante/checkout/" + id;
     }
 
-    @GetMapping("/checkout/{id}")
+    @Value("${STRIPE_PUBLIC_KEY}")
+    private String stripePublicKey;
+
+    @RequestMapping("/checkout/{id}")
     public String checkout(@PathVariable Long id, Model model) {
         model.addAttribute("alquiler", alquilerService.get(id));
+        model.addAttribute("amount", alquilerService.get(id).getCartDetails().getTotal() * 100); // in cents
+        model.addAttribute("stripePublicKey", stripePublicKey);
+        model.addAttribute("currency", ChargeRequest.Currency.USD);
         return "visitantes/checkout";
     }
     //----------------FAMILIA---------------------

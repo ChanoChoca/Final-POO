@@ -109,9 +109,9 @@
                                th:href="@{'/visitante/alquileres?page=' + ${currentPage + 1}}">
                                 <img src="../../static/imagenes/izquierda.svg" style="transform: rotate(180deg)" width="30" height="30" alt>
                             </a>
-
                         </div>
 
+                        <!-- ACÁ COMIENZAN LAS CARDS-->
                         <div class="d-grid card-eventos gap-5 pb-5 pt-5">
                             <div class="card" th:each="alquiler : ${alquileres}">
                                 <div class="ratio ratio-16x9">
@@ -132,6 +132,8 @@
                                 </div>
                             </div>
                         </div>
+                        <<!-- ACÁ TERMINAN LAS CARDS-->
+
 
                         <div class="d-flex flex-row align-items-center justify-content-center gap-3 pb-3 paginado">
                             <a th:if="${currentPage > 1}"
@@ -144,6 +146,7 @@
                                 <img src="../../static/imagenes/izquierda.svg" style="transform: rotate(180deg)" width="30" height="30" alt>
                             </a>
                         </div>
+
                     </div>
                 </div>
             </div>

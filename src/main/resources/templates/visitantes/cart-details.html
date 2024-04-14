@@ -59,11 +59,11 @@
                         </td>
                         <td>
                             <p th:text="${alquiler.getTitulo()}"></p>
-                            <p th:text="${alquiler.getPrecio()}"></p>
+                            <p id="precio-alquiler" th:text="${alquiler.getPrecio()}"></p>
                         </td>
                         <td>
-                            <p id="total-precio">Total: $0</p> <!-- TODO -->
-                            <form role="form" th:action="@{/visitante/cart-details/{id}}" method="post">
+                            <p id="total-precio"></p>
+                            <form role="form" th:action="@{'/visitante/cart-details/' + ${alquiler.id}}" method="post">
                                 <div class="mb-3">
                                     <label for="desde"></label>
                                     <input type="date" class="form-control" id="desde" name="desde">
@@ -102,5 +102,6 @@
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
         <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
         <script src="../../static/script/script.js"></script>
+        <script src="../../static/script/precio.js"></script>
     </body>
 </html>

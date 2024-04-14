@@ -33,7 +33,7 @@ public class SecurityConfig implements WebMvcConfigurer {
 
         http.authorizeHttpRequests(configurer ->
                         configurer
-                                .requestMatchers("/visitante/**", "/static/**", "/exception/**", "/display/**").permitAll()
+                                .requestMatchers("/visitante/**", "/static/**", "/exception/**", "/display/**", "/charge").permitAll()
                                 .anyRequest().authenticated()
                 )
                 .formLogin(form ->
