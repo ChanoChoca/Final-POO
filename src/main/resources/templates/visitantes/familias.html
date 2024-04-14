@@ -45,33 +45,49 @@
         </div>
     </nav>
 </header>
-<div class="box">
-    <div class="box-inner"></div>
-</div>
 
-<div>
-    <p>Nuestra identidad:
+<section class="pb-5 pt-5 mt-5 mb-5 overflow-x-hidden">
+    <div class="d-flex flex-column flex-lg-row align-items-center justify-content-center gap-5">
+        <h2 class="text-center mb-0" data-aos="fade-right" data-aos-easing="linear" data-aos-duration="1000">Descubre si tu apellido se encuentra en España</h2>
 
-        ¿Quiénes somos?
+        <nav data-aos="fade-left" data-aos-easing="linear" data-aos-duration="1000">
+            <p class="lead mb-0" th:if="${searchText != null && searchText != ''}" th:text="'Usted ha buscado: ' + ${searchText}"></p>
+            <form class="d-flex" role="search" th:action="@{/visitante/familia}" method="get">
+                <input class="form-control rounded-start pt-0 pb-0 ps-1 pe-1 searcher" type="search" placeholder="Escriba texto aquí..." aria-label="Search" name="title">
+                <button class="rounded-end btn rounded-0 btn-pseudoclase" type="submit">Buscar</button>
+            </form>
+        </nav>
+    </div>
+</section>
 
-        Somos la Sociedad Española de Socorros Mutuos. El 25 de noviembre de 2023 cumplimos 140 años de inserción en la comunidad de Junín.
-        Comenzó siendo una organización mutualista que se dedicaba a brindar asistencia social, farmacéutica, financiera ,médica, con derivaciones cuando era necesario al Hospital Español  de  Bs.As.;
-        esta asistencia era para  sus miembros y para  miembros de otras sociedades españolas que , de paso por Junín, necesitaban apoyo.
-        También se generaban ayudas en el pago  de sepelios.
+<section class="pt-2 pb-2" data-aos="fade-up" data-aos-easing="linear" data-aos-duration="1000">
+    <!--caja principal de contenido (tiene el estilo ese que se mueve)-->
+    <div class="box">
+        <div class="box-inner"></div>
+    </div>
 
-        Estas  sociedades se originaron en España en el siglo XVIII y se extendieron a América Latina durante el XIX .
-        Hoy muchas de estas instituciones han evolucionado para convertirse, como en nuestro caso, en organizaciones culturales promotoras
-        de la defensa de la lengua española, de sostener los valores culturales de España a través de las artes: teatro, música, baile , canto  y la cocina española.
+    <div style="background-color: #d2b300">
+        <div class="container">
+            <div class="pb-5 pt-5">
+                <ul class="list-group list-group-flush">
+                    <li th:each="apellido : ${ApellidosList}" class="list-group-item d-flex justify-content-between align-items-center">
+                        <span th:text="${apellido}"></span>
+                        <form th:action="@{/visitante/familia_ver-mas}" method="get">
+                            <input type="hidden" name="apellido" th:value="${apellido}" />
+                            <button type="submit" class="btn btn-primary">Ver más</button>
+                        </form>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
 
-        Somos una institución abierta y dispuesta a la ayuda solidaria tanto de españoles como de argentinos que la requieran.
 
-        Los valores que sostiene son: la solidaridad, la ayuda mutua y la cooperación así como el compromiso  responsable por la vigencia de la democracia,
-        el respeto de los derechos humanos, la igualdad de los seres humanos, la justica y la libertad.</p>
-</div>
-
-<div class="box" style="transform: rotate(180deg)">
-    <div class="box-inner"></div>
-</div>
+    <div class="box" style="transform: rotate(180deg)">
+        <div class="box-inner"></div>
+    </div>
+    <!--caja principal de contenido (tiene el estilo ese que se mueve)-->
+</section>
 
 <footer class="container pt-5 pb-5 mt-5">
     <div class="text-center"><img class="img-fluid" src="../../static/imagenes/logo-largo.png" alt="Sociedad Española"></div>
