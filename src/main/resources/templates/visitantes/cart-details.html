@@ -50,34 +50,40 @@
                 <table>
                     <tr style="background-color: #d2b300">
                         <th width="20%" class="p-3">Imagen del alquiler</th>
-                        <th width="50%" class="p-3">Detalles del alquiler</th>
-                        <th width="30%" class="p-3">Opciones</th>
+                        <th width="30%" class="p-3">Detalles del alquiler</th>
+                        <th width="30%" class="p-3 position-absolute start-50">Opciones</th>
+                        <th width="100%" class="p-3"></th>
+
                     </tr>
                     <tr>
-                        <td>
+                        <td class="">
                             <img class="card-img top" th:src="@{${'/display/alquiler?id=' + alquiler.getId()}}" alt>
                         </td>
-                        <td>
+                        <td width="10%" class="">
                             <p th:text="${alquiler.getTitulo()}"></p>
                             <p id="precio-alquiler" th:text="${alquiler.getPrecio()}"></p>
                         </td>
-                        <td>
-                            <p id="total-precio"></p>
+
+                        <td class="" width="100%">
+                            <p class="p-3"id="total-precio"></p>
                             <form role="form" th:action="@{'/visitante/cart-details/' + ${alquiler.id}}" method="post">
-                                <div class="mb-3">
+                                <div class="mb-3 p-3 w-50">
                                     <label for="desde"></label>
                                     <input type="date" class="form-control" id="desde" name="desde">
                                 </div>
-                                <div class="mb-3">
+                                <div class="mb-3 p-3 w-50">
                                     <label for="hasta"></label>
                                     <input type="date" class="form-control" id="hasta" name="hasta">
                                 </div>
-                                <button type="submit" class="btn btn-lg mt-3 rounded-0 btn-pseudoclase">Pagar</button>
+                                <button type="submit" class="btn btn-lg mt-3 rounded-0 btn-pseudoclase ">Pagar</button>
                             </form>
                         </td>
+                        <td class="p-5"></td>
+
                     </tr>
                 </table>
             </section>
+
         </main>
 
         <footer class="container pt-5 pb-5 mt-5">
