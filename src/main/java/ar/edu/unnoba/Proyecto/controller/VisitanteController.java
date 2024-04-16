@@ -8,10 +8,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.threeten.bp.temporal.ChronoUnit;
 
 import java.time.LocalDate;
 //import java.time.temporal.ChronoUnit;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -191,7 +191,7 @@ public class VisitanteController {
 
         List<String> apellidosList;
 
-        if (title == null || title == ""){
+        if (title == null || title.isEmpty()){
             apellidosList = familiaService.getApellidoSinRepetir();
         }
         else{
@@ -208,18 +208,17 @@ public class VisitanteController {
                                      @RequestParam("apellido") String apellido,
                                      @RequestParam(required = false, defaultValue = "") String nombrePersona){
         List<Familia> PersonasList;
-        if(nombrePersona == null || nombrePersona == ""){
+        if(nombrePersona == null || nombrePersona.isEmpty()){
             PersonasList = familiaService.getFamiliaPorApellido(apellido);
         }
         else{
             PersonasList = familiaService.getFamiliaPorApellido(apellido);
 
             // Filtrar las familias por nombre, ignorando mayúsculas y minúsculas y permitiendo coincidencias parciales
-            List<Familia> familiasFiltradas = PersonasList.stream()
+
+            PersonasList = PersonasList.stream()
                     .filter(familia -> familia.getNombre().toLowerCase().contains(nombrePersona.toLowerCase()))
                     .collect(Collectors.toList());
-
-            PersonasList = familiasFiltradas;
         }
 
         model.addAttribute("personas", PersonasList);
