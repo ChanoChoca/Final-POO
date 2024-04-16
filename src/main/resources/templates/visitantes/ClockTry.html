@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reloj</title>
+    <script src="../../static/script/clock.js"></script>
+</head>
+<body>
+<div id="clock-container"></div>
+
+<script>
+    const clockContainer = document.getElementById('clock-container');
+    const clock = new clock(clockContainer);
+    clock.start();
+</script>
+
+</body>
+</html>
