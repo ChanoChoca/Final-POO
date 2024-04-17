@@ -40,6 +40,32 @@ header .navbar-collapse {
     width: auto;
 }
 
+body-reloj{
+    margin:0;
+    width: 100vw;
+    height: 100vw;
+    display: grid;
+    place-items: center;
+    overflow: hidden;
+    background: black;
+}
+#reloj{
+    position: relative;
+    left: 800px;
+    top: -45px;
+    /*
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 200px;
+    height: 200px;
+    border: 2px solid cyan;
+    color: cyan;
+    border-radius: 50%;
+    font-family: monospace;
+    front-size: 1.7rem;
+    */
+}
 
 body {
     background-color: #cdcdcd;
