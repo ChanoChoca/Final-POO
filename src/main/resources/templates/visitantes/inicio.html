@@ -46,6 +46,13 @@
             </nav>
         </header>
 
+        <div>
+            <input type="text" placeholder="Ingrese el nombre de su ciudad" id="city" value="">
+            <button id="btn-clima">Mostrar clima</button>
+            <div id="resultado-clima"></div>
+            <script src="../../static/script/datosClima.js"></script>
+        </div>
+
         <div th:if="${param.logout}" class="alert alert-success text-center">
             <p class="lead">Ha cerrado sesión exitosamente.</p>
         </div>

@@ -9,9 +9,10 @@ let get_datos=() => {
         console.log("la temperatura es: " + (data.main.temp) + `º`);
         console.log(data.weather[0].descripcion);
         console.log(data);
-        resultado=innerHTML= `<h2>${data.name}</h2>
-        <h1>${data.main.temp}</h1>
-        <h4>${data.weather[0].descripcion}</h4>`
+        resultado.innerHTML= `<h2>${data.name}</h2>
+        <h1>${data.main.temp}º</h1>
+        <h4>${data.weather[0].descripcion}</h4>
+        `
     })
 }
 boton.addEventListener(`click`,get_datos);
