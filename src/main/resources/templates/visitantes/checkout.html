@@ -25,7 +25,7 @@
 <body>
 <!-- Display a payment form -->
 <form id="payment-form">
-    <h2>Like the content: Support JavaWhizz</h2>
+    <h2 th:text="*{alquiler.titulo}"></h2>
     <span>You are about to make a payment of: </span>
     <span th:text="*{amount}"></span>
     <span>USD</span>

@@ -178,6 +178,8 @@ public class VisitanteController {
         model.addAttribute("email", "");
         model.addAttribute("productName", alquiler.getTitulo());
 
+        model.addAttribute("alquiler", alquiler);
+
         return "visitantes/checkout";
         //return "redirect:/rent/checkout";
     }

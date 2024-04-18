@@ -120,7 +120,7 @@
                                 <div class="card-body">
                                     <h5 th:text="${alquiler.getTitulo()}" class="card-title"></h5>
                                     <p th:text="${alquiler.estrellas} + ' estrellas'"></p>
-                                    <p th:text="'$ ' + ${alquiler.precio} + ' pesos'"></p>
+                                    <p th:text="'$ ' + ${alquiler.precio} + ' USD por día'"></p>
                                     <p th:text="${alquiler.cantidadHabitaciones} + ' habitaciones'"></p>
                                     <div th:if="${alquiler.hayBufetGratis}">
                                         <p>Buffet gratis</p>
@@ -132,7 +132,7 @@
                                 </div>
                             </div>
                         </div>
-                        <<!-- ACÁ TERMINAN LAS CARDS-->
+                        <!-- ACÁ TERMINAN LAS CARDS-->
 
 
                         <div class="d-flex flex-row align-items-center justify-content-center gap-3 pb-3 paginado">

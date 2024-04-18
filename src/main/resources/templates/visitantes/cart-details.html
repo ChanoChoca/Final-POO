@@ -61,7 +61,7 @@
                         </td>
                         <td width="10%" class="">
                             <p th:text="${alquiler.getTitulo()}"></p>
-                            <p id="precio-alquiler" th:text="${alquiler.getPrecio()}"></p>
+                            <div>$<p id="precio-alquiler" class="d-inline" th:text="${alquiler.getPrecio()}"></p> USD por día</div>
                         </td>
 
                         <td class="" width="100%">
@@ -69,11 +69,11 @@
                             <form role="form" th:action="@{'/visitante/cart-details/' + ${alquiler.id}}" method="post">
                                 <div class="mb-3 p-3 w-50">
                                     <label for="desde"></label>
-                                    <input type="date" class="form-control" id="desde" name="desde">
+                                    <input type="date" class="form-control" id="desde" name="desde" required>
                                 </div>
                                 <div class="mb-3 p-3 w-50">
                                     <label for="hasta"></label>
-                                    <input type="date" class="form-control" id="hasta" name="hasta">
+                                    <input type="date" class="form-control" id="hasta" name="hasta" required>
                                 </div>
                                 <button type="submit" class="btn btn-lg mt-3 rounded-0 btn-pseudoclase ">Pagar</button>
                             </form>
