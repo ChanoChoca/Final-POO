@@ -2,15 +2,16 @@ package ar.edu.unnoba.Proyecto.controller;
 
 import ar.edu.unnoba.Proyecto.model.*;
 import ar.edu.unnoba.Proyecto.service.*;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
-//import java.time.temporal.ChronoUnit;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -157,32 +158,30 @@ public class VisitanteController {
         return "visitantes/cart-details";
     }
 
+    @Value("${stripe.api.publicKey}")
+    private String publicKey;
 
     @PostMapping("/cart-details/{id}")
     public String cartDetails(@PathVariable Long id,
                               @RequestParam("desde") LocalDate desde,
-                              @RequestParam("hasta") LocalDate hasta) {
+                              @RequestParam("hasta") LocalDate hasta,
+                              Model model) {
 
         Alquiler alquiler = alquilerService.get(id);
-        CartDetails cart = new CartDetails(desde, hasta, (int) (alquiler.getPrecio() * ChronoUnit.DAYS.between(desde, hasta)));
+        CartDetails cart = new CartDetails(desde, hasta, (int) (alquiler.getPrecio() * (ChronoUnit.DAYS.between(desde, hasta) + 1)));
         cartDetailsService.save(cart);
         alquiler.setCartDetails(cart);
         alquilerService.save(alquiler);
 
-        return "redirect:/visitante/checkout/" + id;
-    }
+        model.addAttribute("publicKey", publicKey);
+        model.addAttribute("amount", cart.getTotal());
+        model.addAttribute("email", "");
+        model.addAttribute("productName", alquiler.getTitulo());
 
-    @Value("${STRIPE_PUBLIC_KEY}")
-    private String stripePublicKey;
-
-    @RequestMapping("/checkout/{id}")
-    public String checkout(@PathVariable Long id, Model model) {
-        model.addAttribute("alquiler", alquilerService.get(id));
-        model.addAttribute("amount", alquilerService.get(id).getCartDetails().getTotal() * 100); // in cents
-        model.addAttribute("stripePublicKey", stripePublicKey);
-        model.addAttribute("currency", ChargeRequest.Currency.USD);
         return "visitantes/checkout";
+        //return "redirect:/rent/checkout";
     }
+
     //----------------FAMILIA---------------------
 
     @GetMapping("/familia")

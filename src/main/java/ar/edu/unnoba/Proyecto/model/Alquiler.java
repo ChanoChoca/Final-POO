@@ -1,10 +1,10 @@
 package ar.edu.unnoba.Proyecto.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
 import java.io.IOException;
 import java.sql.Blob;
 import java.sql.SQLException;

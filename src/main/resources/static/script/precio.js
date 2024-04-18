@@ -25,7 +25,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
                 let dias = Math.ceil(diferencia / (1000 * 60 * 60 * 24));
 
                 // Calcula el precio total
-                let precioTotal = dias * parseFloat(precio.textContent);
+                let precioTotal = (dias + 1) * parseFloat(precio.textContent);
                 console.log(precioTotal);
 
                 // Muestra el precio total

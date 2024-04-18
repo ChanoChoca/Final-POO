@@ -1,7 +1,5 @@
 package ar.edu.unnoba.Proyecto.controller;
 
-import ar.edu.unnoba.Proyecto.model.Actividad;
-import ar.edu.unnoba.Proyecto.model.Evento;
 import ar.edu.unnoba.Proyecto.service.ActividadService;
 import ar.edu.unnoba.Proyecto.service.AlquilerService;
 import ar.edu.unnoba.Proyecto.service.EventoService;

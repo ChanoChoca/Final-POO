@@ -1,9 +1,9 @@
 package ar.edu.unnoba.Proyecto.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Size;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.validation.constraints.Size;
 import java.io.IOException;
 import java.sql.Blob;
 import java.sql.SQLException;

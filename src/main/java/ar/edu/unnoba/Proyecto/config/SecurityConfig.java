@@ -4,9 +4,13 @@ import ar.edu.unnoba.Proyecto.service.UsuarioService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.web.accept.ContentNegotiationStrategy;
+import org.springframework.web.accept.HeaderContentNegotiationStrategy;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -33,7 +37,7 @@ public class SecurityConfig implements WebMvcConfigurer {
 
         http.authorizeHttpRequests(configurer ->
                         configurer
-                                .requestMatchers("/visitante/**", "/static/**", "/exception/**", "/display/**", "/charge").permitAll()
+                                .requestMatchers("/visitante/**", "/static/**", "/exception/**", "/display/**", "/create-payment-intent").permitAll()
                                 .anyRequest().authenticated()
                 )
                 .formLogin(form ->
@@ -51,6 +55,15 @@ public class SecurityConfig implements WebMvcConfigurer {
                 .exceptionHandling(configurer ->
                         configurer.accessDeniedPage("/access-denied")
                 );
+
+        // + CORS filters
+        http.cors(Customizer.withDefaults());
+
+        // + content negotiation strategy
+        http.setSharedObject(ContentNegotiationStrategy.class, new HeaderContentNegotiationStrategy());
+
+        // we are not using Cookies for session tracking >> disable CSRF
+        http.csrf(AbstractHttpConfigurer::disable);
 
         return http.build();
     }
