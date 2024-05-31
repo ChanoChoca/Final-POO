@@ -12,6 +12,11 @@ body {
     align-content: center;
     height: 100vh;
     width: 100vw;
+    background-color: #cdcdcd;
+}
+
+body > *, body {
+    overflow-x: auto;
 }
 
 form {

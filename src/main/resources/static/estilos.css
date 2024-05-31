@@ -43,6 +43,7 @@ header .navbar-collapse {
 
 body {
     background-color: #cdcdcd;
+    overflow-x: hidden;
 }
 
 .btn-pseudoclase {

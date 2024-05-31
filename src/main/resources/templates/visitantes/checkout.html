@@ -5,30 +5,15 @@
     <title>Accept a payment</title>
     <meta name="description" content="A demo of a payment on Stripe" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="stylesheet" href="/checkout.css" />
-    <script src="https://js.stripe.com/v3/"></script>
-
-    <script th:inline="javascript">
-
-        /*<![CDATA[*/
-
-        var publicKey = /*[[${publicKey}]]*/ null;
-        var amount = /*[[${amount}]]*/ null;
-        var email = /*[[${email}]]*/ null;
-        var productName = /*[[${productName}]]*/ null;
-
-        /*]]>*/
-    </script>
-
-    <script src="/checkout.js" defer></script>
+    <link rel="stylesheet" href="../../static/checkout.css" />
+    <link rel="stylesheet" href="../../static/estilos.css" />
 </head>
 <body>
 <!-- Display a payment form -->
-<form id="payment-form">
+<form id="payment-form" style="background-color: #fff; text-align: center; overflow-x: auto">
     <h2 th:text="*{alquiler.titulo}"></h2>
-    <span>You are about to make a payment of: </span>
-    <span th:text="*{amount}"></span>
-    <span>USD</span>
+    <img style="width:100%" th:src="@{${'/display/alquiler?id=' + alquiler.getId()}}" alt="">
+    <p class="lead">Estás a punto de realizar un pago de <span style="font-weight: bold" th:text="*{amount}"></span><span style="font-weight: bold"> USD</span></p>
     <div id="link-authentication-element">
         <!--Stripe.js injects the Link Authentication Element-->
     </div>
@@ -41,5 +26,20 @@
     </button>
     <div id="payment-message" class="hidden"></div>
 </form>
+<script src="https://js.stripe.com/v3/"></script>
+
+<script th:inline="javascript">
+
+    /*<![CDATA[*/
+
+    const publicKey = /*[[${publicKey}]]*/ null;
+    const amount = /*[[${amount}]]*/ null;
+    const email = /*[[${email}]]*/ null;
+    const productName = /*[[${productName}]]*/ null;
+
+    /*]]>*/
+</script>
+
+<script src="../../static/checkout.js"></script>
 </body>
 </html>
