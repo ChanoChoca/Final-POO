@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+    <head>
+        <meta name="fragment" content="!">
+        <meta content="es-ar" http-equiv="content-language">
+        <meta name="robots" content="index,follow,max-image-preview:large">
+        <meta name="description" content="La Sociedad Española de Socorros Mutuos de Junín es una institución sin fines de lucro en Junín, Provincia de Buenos Aires. Brinda apoyo mutuo y servicios médicos, culturales y sociales a sus miembros. Su edificio en Mendoza 530 es emblemático y ha sido testigo de muchas historias compartidas entre socios. ¡Un faro de solidaridad!">
+        <meta name="keywords" content="sociedad española, sociedad española socorros mutuos, mutualismo, ayuda mutua, cultura, junín, edificio emblemático, comunidad, solidaridad">
+        <meta name="language" content="Spanish">
+        <meta name="telephone" content="+5492364533342">
+        <meta name="whatsapp" content="+5492364533342">
+        <meta name="author" content="Juan Ignacio Caprioli, Valentino Badano, Lucas Lisandro Coria, Leonardo Giorgio Marcelo Lorenzatti, Luis Francisco Martinez, José Matías Fernández, Eduardo Emiliano Rios, Joaquin Rios, Ignacio Pringles">
+        <meta name="application-name" content="Sociedad Española de Socorros Mutuos">
+        <meta name="geo.region" content="AR">
+        <meta name="geo.placename" content="Junín">
+        <meta name="geo.position" content="-34.5930526;-60.9462904">
+        <link rel="shortcut icon" href="../../static/imagenes/eventosImg/logo.svg" type="image/x-icon">
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Sociedad Española Junín | Alquileres</title>
+
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+        <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+        <link rel="stylesheet" href="../../static/estilos.css">
+    </head>
+    <body class="overflow-x-hidden">
+        <header class="position-sticky top-0 z-1">
+            <nav class="navbar navbar-expand-lg bg-body-tertiary">
+                <div class="container-fluid">
+                    <a href="#"><img src="../../static/imagenes/logo-largo.png" alt="Sociedad Española" height="40.8" width="230" ></a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+                        <div class="navbar-nav text-center ms-auto">
+                            <a class="nav-link" aria-current="page" href="/visitante/inicio">Inicio</a>
+                            <a class="nav-link" href="/visitante/alquileres">Alquileres</a>
+                            <a class="nav-link" href="/visitante/eventos">Eventos</a>
+                            <a class="nav-link" href="/visitante/actividades">Actividades</a>
+                            <a class="nav-link" href="/visitante/historia">Historia</a>
+                            <a class="nav-link" href="/visitante/familia">tenes familia en españa?</a>
+                            <a class="nav-link" href="/visitante/contacto">Contacto</a>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+        </header>
+<!--
+        <section class="pb-5 pt-5 mt-5 mb-5 overflow-x-hidden">
+            <div class="d-flex flex-column flex-lg-row align-items-center justify-content-center gap-5">
+                <h2 class="text-center mb-0" data-aos="fade-right" data-aos-easing="linear" data-aos-duration="1000">Descubre Nuestros Próximas Actividades</h2>
+
+                <nav data-aos="fade-left" data-aos-easing="linear" data-aos-duration="1000">
+                    <form class="d-flex" role="search" th:action="@{/visitante/alquileres}" method="get">
+                        <input class="form-control rounded-start pt-0 pb-0 ps-1 pe-1 searcher" type="search" placeholder="Escriba texto aquí..." aria-label="Search" name="title">
+                        <button class="rounded-end btn rounded-0 btn-pseudoclase" type="submit">Buscar</button>
+                    </form>
+                </nav>
+            </div>
+        </section>
+-->
+        <section class="pt-2 pb-2" data-aos="fade-up" data-aos-easing="linear" data-aos-duration="1000">
+
+            <div class="box">
+                <div class="box-inner"></div>
+            </div>
+
+            <div style="background-color: #d2b300">
+                <div class="row overflow-x-hidden">
+                    <div class="col-3 pt-3 ps-3">
+                        <p class="lead mb-0" th:if="${searchText != null && searchText != ''}"
+                           th:text="${searchText}">
+                        </p>
+                        <form action="/alquileres/eventos" role="search" th:action="@{/visitante/alquileres}" method="get">
+                            <div class="mb-3 p-3">
+                                <input class="form-control shadow  bg-body-tertiary rounded p-3" type="search" placeholder="Busque aquí..." aria-label="Search" name="title">
+                            </div>
+                            <div class="mb-3 p-3">
+                                <label for="minPrice"></label>
+                                <input type="number" class="form-control bg-body-tertiary rounded p-3" placeholder="Mínimo" id="minPrice" name="minPrice">
+                            </div>
+                            <div class="mb-3 p-3">
+                                <label for="maxPrice"></label>
+                                <input type="number" class="form-control bg-body-tertiary rounded p-3" id="maxPrice" placeholder="Máximo" name="maxPrice">
+                            </div>
+                            <div class="mb-3 p-3">
+                                <input type="checkbox" class="form-check-input bg-body-tertiary rounded p-3" id="wifi" name="wifi">
+                                <label class="form-check-label text-white p-2" for="wifi">WiFi</label>
+                            </div>
+                            <div class="mb-3 p-3">
+                                <input type="checkbox" class="form-check-input bg-body-tertiary rounded p-3" id="bufet" name="bufet">
+                                <label class="form-check-label text-white" for="bufet">Bufet</label>
+                            </div>
+                            <div class="p-3">
+                                <button type="submit" class="btn btn-lg mt-3 rounded-0 btn-pseudoclase bg-body-tertiary rounded p-3">Filtrar</button>
+                            </div>
+                        </form>
+                        <!--TODO: agregar más cosas acá-->
+
+                    </div>
+                    <div class="col-9 pt-3">
+                        <div class="d-flex flex-row align-items-center justify-content-center gap-3 paginado">
+                            <a th:if="${currentPage > 1}"
+                               th:href="@{'/alquileres/alquileres?page=' + ${currentPage - 1}}">
+                                <img src="../../static/imagenes/izquierda.svg" width="30" height="30" alt>
+                            </a>
+                            <span class="fs-5 text-white">Página <span th:text="${currentPage}"></span> de <span th:text="${totalPages}"></span></span>
+                            <a th:if="${currentPage < totalPages}"
+                               th:href="@{'/visitante/alquileres?page=' + ${currentPage + 1}}">
+                                <img src="../../static/imagenes/izquierda.svg" style="transform: rotate(180deg)" width="30" height="30" alt>
+                            </a>
+                        </div>
+
+                        <!-- ACÁ COMIENZAN LAS CARDS-->
+                        <div class="d-grid card-eventos gap-5 pb-5 pt-5">
+                            <div class="card" th:each="alquiler : ${alquileres}">
+                                <div class="ratio ratio-16x9">
+                                    <img class="card-img top" th:src="@{${'/display/alquiler?id=' + alquiler.getId()}}" alt>
+                                </div>
+                                <div class="card-body">
+                                    <h5 th:text="${alquiler.getTitulo()}" class="card-title"></h5>
+                                    <p th:text="${alquiler.estrellas} + ' estrellas'"></p>
+                                    <p th:text="'$ ' + ${alquiler.precio} + ' USD por día'"></p>
+                                    <p th:text="${alquiler.cantidadHabitaciones} + ' habitaciones'"></p>
+                                    <div th:if="${alquiler.hayBufetGratis}">
+                                        <p>Buffet gratis</p>
+                                    </div>
+                                    <div th:if="${alquiler.hayWifi}">
+                                        <p>WiFi gratis</p>
+                                    </div>
+                                    <a th:href="@{'/visitante/cart-details/' + ${alquiler.getId()}}" class="btn rounded-0 btn-pseudoclase">¡Alquilar ahora!</a>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- ACÁ TERMINAN LAS CARDS-->
+
+
+                        <div class="d-flex flex-row align-items-center justify-content-center gap-3 pb-3 paginado">
+                            <a th:if="${currentPage > 1}"
+                               th:href="@{'/visitante/alquileres?page=' + ${currentPage - 1}}">
+                                <img src="../../static/imagenes/izquierda.svg" width="30" height="30" alt>
+                            </a>
+                            <span class="fs-5 text-white">Página <span th:text="${currentPage}"></span> de <span th:text="${totalPages}"></span></span>
+                            <a th:if="${currentPage < totalPages}"
+                               th:href="@{'/visitante/alquileres?page=' + ${currentPage + 1}}">
+                                <img src="../../static/imagenes/izquierda.svg" style="transform: rotate(180deg)" width="30" height="30" alt>
+                            </a>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="box" style="transform: rotate(180deg)">
+                <div class="box-inner"></div>
+            </div>
+        </section>
+
+        <footer class="container pt-5 pb-5 mt-5">
+            <div class="text-center"><img class="img-fluid" src="../../static/imagenes/logo-largo.png" alt="Sociedad Española"></div>
+            <div class="d-grid grid-footer gap-5 pt-5">
+                <div class="text-center mx-auto">
+                    <div class="d-flex align-items-center">
+                        <img src="../../static/imagenes/ubicacion.svg" alt width="40.2" height="40.2">
+                        <span class="fs-1 ps-3">¿Dónde estamos?</span>
+                    </div>
+                    <div><a href="https://maps.app.goo.gl/xjwUxZG8DANdN8AR7" class="text-decoration-none text-black fs-4 subrayado">Narbondo 32, Junín, Buenos Aires</a></div>
+                </div>
+                <div class="text-center">
+                    <div class="d-flex align-items-center justify-content-center">
+                        <img src="../../static/imagenes/llamar.svg" alt width="40.2" height="40.2">
+                        <span class="fs-1 ps-3">Nuestro contacto</span>
+                    </div>
+                    <div><a href="tel:542364533342" class="text-decoration-none text-black fs-4 subrayado" role="button">+54 9 236 453-3342</a></div>
+                </div>
+            </div>
+        </footer>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+        <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+        <script src="../../static/script/script.js"></script>
+    </body>
+</html>
